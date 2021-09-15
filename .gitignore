@@ -1,0 +1,11 @@
+Debug
+Release
+x64
+packages
+.vs
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.users
+*.vcxproj.user
+*.sln
+packages.config
