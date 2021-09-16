@@ -1,8 +1,5 @@
 #pragma once
 
-#define MININF -100000
-#define MAXINF 200000 
-
 typedef struct node {
 	int value;
 	struct node* next;
@@ -23,4 +20,4 @@ node* insert(node* elem, int key);
 void listinsert(list* mylist, int key, int* size);
 void printlist(node* elem, int size);
 //void delete (node* elem, int key, int* size);
-int sum (int a, int b);
+int sum(int a, int b);
