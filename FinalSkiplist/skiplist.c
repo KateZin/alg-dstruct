@@ -1,31 +1,11 @@
 ﻿#include <stdio.h>
 #include"skiplist.h"
 
-
-// ÂÎĎĐÎŃŰ ĘÎŇÎĐŰĹ ÂÎÇÍČĘŔŢŇ Â ĎĐÎÖĹŃŃĹ ĐŔÁÎŇŰ
-// ĘŔĘ ĎÎÄĘËŢ×ČŇÜ ĂČŇŐŔÁ Č ĐŔÁÎŇŔŇÜ ŇŔĚ
-// ĚÍĹ ÂŃĹĂÄŔ ÍŔÄÎ ĎČŃŔŇÜ STRUCT ĎĐČ ČŃĎÎËÜÇÎÂŔÍČČ 
-
-
 #define MININF -100000
 #define MAXINF 200000
 
-//
-//typedef struct node {
-//	int value;
-//	struct node* next;
-//	struct node* down;
-//} node;
-//
-//typedef struct list {
-//	struct node* head;
-//	struct node* tail;
-//}list;
-
-
 node* buildnode(int key, node* down_node, node* next_node) {
 	node* newnode = (node*)malloc(sizeof(node));
-
 	newnode->value = key;
 	newnode->next = next_node;
 	newnode->down = down_node;
@@ -42,38 +22,6 @@ struct list* createlist() {
 	return newlist;
 }
 
-
-/*
-node* search( list* mylist, int key) {
-	node* n = mylist->head;
-	while (n->down != NULL) {
-		n = n->down;
-		while (n->value < n->next->value) {
-			n = n->next;
-		 }
-	}
-	return n;
-}
-*/
-
-//node* search(node* elem, int key) {
-//	if (elem->value < key){
-//		elem = elem->next;
-//	if (elem->value == key)
-//			return elem;
-//	} 
-//	// ĺńëč đŕâĺí ňî âîçâđŕůŕĺě ýë-ň, ĺńëč áîëüřĺ, ňî áĺđĺě íčćíčé ýëĺěĺíň
-//	// ĺńëč íčćíčé đŕâĺí íóëë ňî âîçâđŕůŕĺě íóëë, číŕ÷ĺ ďîâňîđ˙ĺě ďîčńę
-//	
-//	 if (elem->next->value > key)
-//		elem = elem->down;
-//	if (elem == NULL)
-//		return NULL;
-//	else
-//		return search(elem, key);
-//}
-
-
 node* search(node* elem, int key) {
 	while (elem->next->value < key)
 		elem = elem->next;
@@ -85,14 +33,11 @@ node* search(node* elem, int key) {
 		return NULL;
 	else
 		search(elem, key);
-
 }
 
 char coin() {
 	return rand() % 2;
-
 }
-
 
 node* insert(node* elem, int key) {
 	while (elem->next != NULL && elem->next->value < key) {
@@ -126,9 +71,7 @@ void listinsert(list** mylist, int key, int* size) {
 		newlist->head->down = (*mylist)->head;
 		(*mylist) = newlist;
 	}
-	
 		(*size) = (*size) + 1;
-	
 }
 
 void printlist(node* elem) {
@@ -142,7 +85,6 @@ void printlist(node* elem) {
 	printf("\n");
 }
 
-
 void printWholeList(node* elem) {
 	node* curNode = elem;
 	while (curNode) {
@@ -150,7 +92,6 @@ void printWholeList(node* elem) {
 		curNode = curNode->down;
 	}
 }
-
 
 void deleteEl(node* elem, int key, int* size) {
 	while (elem->next != NULL && elem->next->value < key)
