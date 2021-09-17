@@ -98,12 +98,10 @@ node* insert(node* elem, int key) {
 	while (elem->next != NULL && elem->next->value < key) {
 		elem = elem->next;
 	}
-	if (elem->value == key)
-		return NULL;
+	
 	node* down_node;
 	if (elem->down == NULL) {
 		down_node = NULL;
-		// äîëćíű ÷ňî ňî âńňŕâčňü?
 	}
 	else {
 		down_node = insert(elem->down, key);
@@ -111,20 +109,15 @@ node* insert(node* elem, int key) {
 	if (down_node != NULL || elem->down == NULL) {
 		elem->next = buildnode(key, down_node, elem->next);
 		if (coin() == 1) {
-			//	printf("coin is 1, so we go up\n");
 			return elem->next;
 		}
 		return NULL;
 	}
 	return NULL;
-
-	// ńđŕâíčâŕĺě čäĺě âďĺđĺä âíčç äî ňĺő îđ îęŕ íĺ íŕřëč ěĺńňî
-	// ĺńëč 1 óđîâĺíü âńňŕâë˙ĺě ýëĺěĺíň č íčćíčé = íóë
-	// ĺńëč íĺ ďĺđâűé ňî ěîíĺňęŕ, ĺńëč ěîíĺňęŕ đŕâíŕ 1 č íĺ ďĺđâűé óđîâĺíü ňî âńňŕâë˙ĺě ýëĺěĺíň âîçâđŕůŕ
 }
 
 void listinsert(list** mylist, int key, int* size) {
-
+	if (search((*mylist)->head, key)) return;
 	node* newnode = insert((*mylist)->head, key);
 	if (newnode != NULL) {
 		list* newlist = createlist();
@@ -133,7 +126,9 @@ void listinsert(list** mylist, int key, int* size) {
 		newlist->head->down = (*mylist)->head;
 		(*mylist) = newlist;
 	}
-	(*size) = (*size) + 1;
+	
+		(*size) = (*size) + 1;
+	
 }
 
 void printlist(node* elem) {
@@ -162,7 +157,10 @@ void deleteEl(node* elem, int key, int* size) {
 		elem = elem->next;
 	if (elem->down != NULL)
 		deleteEl(elem->down, key, size);
-	if (elem->next != NULL && elem->next->value == key)
+	if (elem->next != NULL && elem->next->value == key) {
 		elem->next = elem->next->next;
-	(*size) = (*size) - 1;
+		if (elem->down == NULL) {
+			(*size) = (*size) - 1;
+		}
+	}
 }

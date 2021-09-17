@@ -9,3 +9,5 @@ packages
 *.vcxproj.user
 *.sln
 packages.config
+pch.h
+pch.cpp

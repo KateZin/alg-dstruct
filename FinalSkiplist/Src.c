@@ -9,5 +9,5 @@ void main() {
 		printf("%d\n", size);
 	}
 	deleteEl(mylist->head, 3, &size);
-	printf("%d\n", mylist->size);
+	printf("%d\n", size);
 }
