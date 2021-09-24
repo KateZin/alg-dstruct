@@ -2,21 +2,22 @@
 #include"skiplist.h"
 #include<math.h>
 
-#define MININF (-1)*INFINITY
-#define MAXINF INFINITY
-
-node* buildNode(int key, node* down_node, node* next_node) {
-	node* newnode = (node*)malloc(sizeof(node));
+node* _buildNode(float key, node* down_node, node* next_node) {
+	node* newnode = (node*)malloc(sizeof(node)); // todo: сделать проверку на malloс выvдление памяти
 	newnode->value = key;
 	newnode->next = next_node;
 	newnode->down = down_node;
 	return newnode;
 }
 
+node* buildNode(int key, node* down_node, node* next_node) {
+	return _buildNode((float)key, down_node, next_node);
+}
+
 struct list* createList() {
-	struct list* newlist = (list*)malloc(sizeof(list));
-	node* head = buildnode(MININF, NULL, NULL);
-	node* tail = buildnode(MAXINF, NULL, NULL);
+	struct list* newlist = (list*)malloc(sizeof(list));    // todo: сделать проверку на malloс выvдление памяти
+	node* head = _buildNode((-1) * INFINITY, NULL, NULL);
+	node* tail = _buildNode(INFINITY, NULL, NULL);
 	newlist->head = head;
 	newlist->tail = tail;
 	head->next = tail;
@@ -24,6 +25,7 @@ struct list* createList() {
 }
 
 node* search(node* elem, int key) {
+	key = (float)key;
 	while (elem->next->value < key)
 		elem = elem->next;
 	if (elem->next->value == key)
@@ -53,7 +55,7 @@ node* insert(node* elem, int key) {
 		down_node = insert(elem->down, key);
 	}
 	if (down_node != NULL || elem->down == NULL) {
-		elem->next = buildnode(key, down_node, elem->next);
+		elem->next = buildNode(key, down_node, elem->next);
 		if (coin() == 1) {
 			return elem->next;
 		}
@@ -66,8 +68,8 @@ void listInsert(list** mylist, int key, int* size) {
 	if (search((*mylist)->head, key)) return;
 	node* newnode = insert((*mylist)->head, key);
 	if (newnode != NULL) {
-		list* newlist = createlist();
-		node* addnode = buildnode(key, newnode, newlist->tail);
+		list* newlist = createList();
+		node* addnode = buildNode(key, newnode, newlist->tail);
 		newlist->head->next = addnode;
 		newlist->head->down = (*mylist)->head;
 		(*mylist) = newlist;
@@ -78,23 +80,24 @@ void listInsert(list** mylist, int key, int* size) {
 void printList(node* elem) {
 	int i = 0;
 	node* curNode = elem;
-	while (curNode) {
-		if (curNode->value != MININF && curNode->value != MAXINF)
-			printf("%d ", curNode->value);
+	while (curNode->next->value == INFINITY) {
+		if ((curNode->value != -1*INFINITY) && (curNode->value != INFINITY))
+			printf("%d ", (int)curNode->value);
 		curNode = curNode->next;
 	}
 	printf("\n");
 }
 
-void printWholeList(node* elem) {
-	node* curNode = elem;
-	while (curNode) {
-		printlist(curNode);
+void printWholeList(list** mylist) {
+	node* curNode = (*mylist)->head;
+	while (curNode != NULL) {
+		printList(&curNode);
 		curNode = curNode->down;
 	}
 }
 
-void deleteEl(node* elem, int key, int* size) {
+void deleteEl(node* elem , int key, int* size) {
+	//node* elem = (*mylist)->head;
 	while (elem->next != NULL && elem->next->value < key)
 		elem = elem->next;
 	if (elem->down != NULL)
@@ -105,4 +108,11 @@ void deleteEl(node* elem, int key, int* size) {
 			(*size) = (*size) - 1;
 		}
 	}
+}
+
+int listDeleteEl(list** mylist, int key, int* size) {
+	int currentSize = *size;
+	deleteEl((*mylist)->head, key, size);
+	if (currentSize < *size) return 1;
+	return 0;
 }
