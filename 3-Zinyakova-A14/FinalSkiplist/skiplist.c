@@ -1,10 +1,11 @@
 ﻿#include <stdio.h>
 #include"skiplist.h"
+#include<math.h>
 
-#define MININF -100000
-#define MAXINF 200000
+#define MININF (-1)*INFINITY
+#define MAXINF INFINITY
 
-node* buildnode(int key, node* down_node, node* next_node) {
+node* buildNode(int key, node* down_node, node* next_node) {
 	node* newnode = (node*)malloc(sizeof(node));
 	newnode->value = key;
 	newnode->next = next_node;
@@ -12,7 +13,7 @@ node* buildnode(int key, node* down_node, node* next_node) {
 	return newnode;
 }
 
-struct list* createlist() {
+struct list* createList() {
 	struct list* newlist = (list*)malloc(sizeof(list));
 	node* head = buildnode(MININF, NULL, NULL);
 	node* tail = buildnode(MAXINF, NULL, NULL);
@@ -43,7 +44,7 @@ node* insert(node* elem, int key) {
 	while (elem->next != NULL && elem->next->value < key) {
 		elem = elem->next;
 	}
-	
+
 	node* down_node;
 	if (elem->down == NULL) {
 		down_node = NULL;
@@ -61,7 +62,7 @@ node* insert(node* elem, int key) {
 	return NULL;
 }
 
-void listinsert(list** mylist, int key, int* size) {
+void listInsert(list** mylist, int key, int* size) {
 	if (search((*mylist)->head, key)) return;
 	node* newnode = insert((*mylist)->head, key);
 	if (newnode != NULL) {
@@ -71,10 +72,10 @@ void listinsert(list** mylist, int key, int* size) {
 		newlist->head->down = (*mylist)->head;
 		(*mylist) = newlist;
 	}
-		(*size) = (*size) + 1;
+	(*size) = (*size) + 1;
 }
 
-void printlist(node* elem) {
+void printList(node* elem) {
 	int i = 0;
 	node* curNode = elem;
 	while (curNode) {

@@ -1,7 +1,7 @@
 #include "skiplist.h"
 
 void main() {
-	list* mylist = createlist();
+	list* mylist = createList();
 	int size = mylist->size;
 	size = 0;
 	for (int i = 0; i < 5; i++) {
