@@ -11,7 +11,6 @@ void main() {
 		printf("%d\n", size);
 	}
 	listDeleteEl(&mylist, 3, &size);
-	printWholeList(&mylist);
 	//deleteEl(mylist->head, 4, &size);
 	if (3648334734384734< mylist->tail->value)
 	printf("%f\n", mylist->tail->value);

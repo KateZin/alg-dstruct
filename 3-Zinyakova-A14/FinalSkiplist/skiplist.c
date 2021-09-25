@@ -2,26 +2,37 @@
 #include"skiplist.h"
 #include<math.h>
 
-node* _buildNode(float key, node* down_node, node* next_node) {
+
+
+
+node* _buildNode(float key, node* downNode, node* nextNode) {
 	node* newnode = (node*)malloc(sizeof(node)); // todo: сделать проверку на malloс выvдление памяти
+	if (newnode == NULL) {
+		printf("error in memory");
+		return -1;
+	}
 	newnode->value = key;
-	newnode->next = next_node;
-	newnode->down = down_node;
+	newnode->next = nextNode;
+	newnode->down = downNode;
 	return newnode;
 }
 
-node* buildNode(int key, node* down_node, node* next_node) {
-	return _buildNode((float)key, down_node, next_node);
+node* buildNode(int key, node* downNode, node* nextNode) {
+	return _buildNode((float)key, downNode, nextNode);
 }
 
 struct list* createList() {
-	struct list* newlist = (list*)malloc(sizeof(list));    // todo: сделать проверку на malloс выvдление памяти
+	struct list* newList = (list*)malloc(sizeof(list));    // todo: сделать проверку на malloс выvдление памяти
+	if (newList == NULL) {
+		printf("error in memory");
+		return -1;
+	}
 	node* head = _buildNode((-1) * INFINITY, NULL, NULL);
 	node* tail = _buildNode(INFINITY, NULL, NULL);
-	newlist->head = head;
-	newlist->tail = tail;
+	newList->head = head;
+	newList->tail = tail;
 	head->next = tail;
-	return newlist;
+	return newList;
 }
 
 node* search(node* elem, int key) {
@@ -47,15 +58,15 @@ node* insert(node* elem, int key) {
 		elem = elem->next;
 	}
 
-	node* down_node;
+	node* downNode;
 	if (elem->down == NULL) {
-		down_node = NULL;
+		downNode = NULL;
 	}
 	else {
-		down_node = insert(elem->down, key);
+		downNode = insert(elem->down, key);
 	}
-	if (down_node != NULL || elem->down == NULL) {
-		elem->next = buildNode(key, down_node, elem->next);
+	if (downNode != NULL || elem->down == NULL) {
+		elem->next = buildNode(key, downNode, elem->next);
 		if (coin() == 1) {
 			return elem->next;
 		}
@@ -64,15 +75,15 @@ node* insert(node* elem, int key) {
 	return NULL;
 }
 
-void listInsert(list** mylist, int key, int* size) {
-	if (search((*mylist)->head, key)) return;
-	node* newnode = insert((*mylist)->head, key);
+void listInsert(list** myList, int key, int* size) {
+	if (search((*myList)->head, key)) return;
+	node* newnode = insert((*myList)->head, key);
 	if (newnode != NULL) {
-		list* newlist = createList();
-		node* addnode = buildNode(key, newnode, newlist->tail);
-		newlist->head->next = addnode;
-		newlist->head->down = (*mylist)->head;
-		(*mylist) = newlist;
+		list* newList = createList();
+		node* addnode = buildNode(key, newnode, newList->tail);
+		newList->head->next = addnode;
+		newList->head->down = (*myList)->head;
+		(*myList) = newList;
 	}
 	(*size) = (*size) + 1;
 }
@@ -88,8 +99,8 @@ void printList(node* elem) {
 	printf("\n");
 }
 
-void printWholeList(list** mylist) {
-	node* curNode = (*mylist)->head;
+void printWholeList(list** myList) {
+	node* curNode = (*myList)->head;
 	while (curNode != NULL) {
 		printList(&curNode);
 		curNode = curNode->down;
@@ -110,9 +121,9 @@ void deleteEl(node* elem , int key, int* size) {
 	}
 }
 
-int listDeleteEl(list** mylist, int key, int* size) {
+int listDeleteEl(list** myList, int key, int* size) {
 	int currentSize = *size;
-	deleteEl((*mylist)->head, key, size);
+	deleteEl((*myList)->head, key, size);
 	if (currentSize < *size) return 1;
 	return 0;
 }
