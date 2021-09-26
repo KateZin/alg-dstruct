@@ -2,17 +2,15 @@ Debug
 Release
 x64
 packages
-.vs
-.vcxproj
-.vcxproj.filters
-.vcxproj.users
-.vcxproj.user
-.sln
+*.vs
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.users
+*.vcxproj.user
+*.sln
 packages.config
 pch.h
 pch.cpp
-3-Zinyakova-A14/FinalSkipListTest/Debug/FinalSkipListTest.exe.recipe
-
 
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -368,4 +366,4 @@ MigrationBackup/
 
 
 *.sln
-*.vcxproj*s
+*.vcxproj*
