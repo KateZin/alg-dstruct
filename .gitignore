@@ -369,3 +369,6 @@ MigrationBackup/
 
 *.sln
 *.vcxproj*s
+*.vcxproj
+*.vcxproj
+3-Zinyakova-A14/FinalSkipListTest/FinalSkipListTest.vcxproj
