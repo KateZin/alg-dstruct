@@ -9,7 +9,7 @@ node* _buildNode(float key, node* downNode, node* nextNode) {
 	node* newnode = (node*)malloc(sizeof(node)); // todo: сделать проверку на malloс выvдление памяти
 	if (newnode == NULL) {
 		printf("error in memory");
-		return -1;
+		return NULL;
 	}
 	newnode->value = key;
 	newnode->next = nextNode;
@@ -22,10 +22,10 @@ node* buildNode(int key, node* downNode, node* nextNode) {
 }
 
 struct list* createList() {
-	struct list* newList = (list*)malloc(sizeof(list));    // todo: сделать проверку на malloс выvдление памяти
+	struct list* newList = (list*)malloc(sizeof(list));    
 	if (newList == NULL) {
 		printf("error in memory");
-		return -1;
+		return NULL;
 	}
 	node* head = _buildNode((-1) * INFINITY, NULL, NULL);
 	node* tail = _buildNode(INFINITY, NULL, NULL);
@@ -34,6 +34,8 @@ struct list* createList() {
 	head->next = tail;
 	return newList;
 }
+
+
 
 node* search(node* elem, int key) {
 	key = (float)key;
@@ -47,6 +49,15 @@ node* search(node* elem, int key) {
 		return NULL;
 	else
 		search(elem, key);
+}
+
+int searchEl(list** mylist, int key) {
+	node* elem = (*mylist)->head->next;
+	node* a = search(elem, key);
+	if (a != NULL)
+		return key;
+	else
+		return NULL;
 }
 
 char coin() {
@@ -99,13 +110,13 @@ void printList(node* elem) {
 	printf("\n");
 }
 
-void printWholeList(list** myList) {
-	node* curNode = (*myList)->head;
-	while (curNode != NULL) {
-		printList(&curNode);
-		curNode = curNode->down;
-	}
-}
+//void printWholeList(list** myList) {
+//	node* curNode = (*myList)->head;
+//	while (curNode != NULL) {
+//		printList(&curNode);
+//		curNode = curNode->down;
+//	}
+//}
 
 void deleteEl(node* elem , int key, int* size) {
 	//node* elem = (*mylist)->head;
