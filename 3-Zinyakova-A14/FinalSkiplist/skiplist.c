@@ -2,11 +2,8 @@
 #include"skiplist.h"
 #include<math.h>
 
-
-
-
 node* _buildNode(float key, node* downNode, node* nextNode) {
-	node* newnode = (node*)malloc(sizeof(node)); // todo: сделать проверку на malloс выvдление памяти
+	node* newnode = (node*)malloc(sizeof(node)); 
 	if (newnode == NULL) {
 		printf("error in memory");
 		return NULL;
@@ -32,10 +29,9 @@ struct list* createList() {
 	newList->head = head;
 	newList->tail = tail;
 	head->next = tail;
+	newList->size = 0;
 	return newList;
 }
-
-
 
 node* search(node* elem, int key) {
 	key = (float)key;
@@ -51,20 +47,17 @@ node* search(node* elem, int key) {
 		search(elem, key);
 }
 
-int searchEl(list** mylist, int key) {
-	node* elem = (*mylist)->head->next;
-	node* a = search(elem, key);
-	if (a != NULL)
-		return key;
-	else
-		return NULL;
-}
-
 char coin() {
 	return rand() % 2;
 }
 
-node* insert(node* elem, int key) {
+node* insert(node* elem, int key, int* size) {
+	if (search(elem, key)) {
+		printf("element is already existed");
+		return NULL;
+	}
+	else
+		*size = *size + 1;
 	while (elem->next != NULL && elem->next->value < key) {
 		elem = elem->next;
 	}
@@ -74,7 +67,7 @@ node* insert(node* elem, int key) {
 		downNode = NULL;
 	}
 	else {
-		downNode = insert(elem->down, key);
+		downNode = insert(elem->down, key, size);
 	}
 	if (downNode != NULL || elem->down == NULL) {
 		elem->next = buildNode(key, downNode, elem->next);
@@ -84,19 +77,6 @@ node* insert(node* elem, int key) {
 		return NULL;
 	}
 	return NULL;
-}
-
-void listInsert(list** myList, int key, int* size) {
-	if (search((*myList)->head, key)) return;
-	node* newnode = insert((*myList)->head, key);
-	if (newnode != NULL) {
-		list* newList = createList();
-		node* addnode = buildNode(key, newnode, newList->tail);
-		newList->head->next = addnode;
-		newList->head->down = (*myList)->head;
-		(*myList) = newList;
-	}
-	(*size) = (*size) + 1;
 }
 
 void printList(node* elem) {
@@ -110,16 +90,15 @@ void printList(node* elem) {
 	printf("\n");
 }
 
-//void printWholeList(list** myList) {
-//	node* curNode = (*myList)->head;
-//	while (curNode != NULL) {
-//		printList(&curNode);
-//		curNode = curNode->down;
-//	}
-//}
-
-void deleteEl(node* elem , int key, int* size) {
-	//node* elem = (*mylist)->head;
+int deleteEl(node* elem , int key, int* size) {
+	if (size == 0) {
+		printf("empty list");
+		return -1;
+	}
+	if (search(elem, key) == NULL) {
+		printf("Such element doesn't exist");
+		return -1;
+	}
 	while (elem->next != NULL && elem->next->value < key)
 		elem = elem->next;
 	if (elem->down != NULL)
@@ -130,11 +109,7 @@ void deleteEl(node* elem , int key, int* size) {
 			(*size) = (*size) - 1;
 		}
 	}
-}
-
-int listDeleteEl(list** myList, int key, int* size) {
-	int currentSize = *size;
-	deleteEl((*myList)->head, key, size);
-	if (currentSize < *size) return 1;
 	return 0;
 }
+
+
