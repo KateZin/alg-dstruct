@@ -24,7 +24,7 @@ TEST(SearchElementInList, search_SearchExistingElementInOneLevel_ExpectTrue) {
 
 TEST(SearchElementInList, search_SearchNotExistingElementInOneLevel_ExpectTrue) {
 
-	node tail { INFINITY, NULL, NULL };
+	node tail{ INFINITY, NULL, NULL };
 	node third = { 5, &tail, NULL };
 	node second = { 3, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
@@ -189,3 +189,6 @@ TEST(DeleteElementInList, deleteEl_DeleteElementInTwoLevelList_ExpectEquel) {
 	EXPECT_EQ(p1->next->value, p2->value);
 	EXPECT_EQ(p3->next->value, p4->value);
 }
+
+
+

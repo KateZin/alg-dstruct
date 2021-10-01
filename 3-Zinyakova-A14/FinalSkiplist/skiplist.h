@@ -13,11 +13,11 @@ typedef struct list {
 }list;
 
 node* buildNode(int key, node* down_node, node* next_node);
-struct list* createList(); 
-node* search(node* elem, int key); 
-node* insert(node* elem, int key, int*size);
+struct list* createList();
+node* search(node* elem, int key);
+node* insert(node* elem, int key, int* size);
 void printList(node* elem);
-int deleteEl(node* element, int key, int* size); 
+int deleteEl(node* element, int key, int* size);
 
 
 
