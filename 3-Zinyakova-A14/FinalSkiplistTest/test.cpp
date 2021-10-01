@@ -10,6 +10,7 @@ TEST(ListCreation, createList_CreateNewList_ExpectTrue) {
 	EXPECT_TRUE(newList->tail);
 	EXPECT_EQ(newList->size, 0);
 }
+
 TEST(SearchElementInList, search_SearchExistingElementInOneLevel_ExpectTrue) {
 
 	node tail{ INFINITY, NULL, NULL };
@@ -20,6 +21,7 @@ TEST(SearchElementInList, search_SearchExistingElementInOneLevel_ExpectTrue) {
 	node* elem = search(&head, 3);
 	EXPECT_TRUE(elem);
 }
+
 TEST(SearchElementInList, search_SearchNotExistingElementInOneLevel_ExpectTrue) {
 
 	node tail { INFINITY, NULL, NULL };
@@ -30,6 +32,7 @@ TEST(SearchElementInList, search_SearchNotExistingElementInOneLevel_ExpectTrue) 
 	node* elem = search(&head, 2);
 	EXPECT_FALSE(elem);
 }
+
 TEST(SearchElementInList, search_SearchExistingElementInTwoFullLevels_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
@@ -46,8 +49,6 @@ TEST(SearchElementInList, search_SearchExistingElementInTwoFullLevels_ExpectTrue
 	EXPECT_TRUE(elem);
 }
 
-
-
 TEST(SearchElementInList, search_SearchExistingElementInTwoNotFullLevels_ExpectTrue) {
 
 	node tail{ INFINITY, NULL, NULL };
@@ -62,6 +63,7 @@ TEST(SearchElementInList, search_SearchExistingElementInTwoNotFullLevels_ExpectT
 	node* elem = search(&head, 15);
 	EXPECT_TRUE(elem);
 }
+
 TEST(PuttingElementInList, insert_AddingElementInEmptyist_ExpectEquel) {    // test insert
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
@@ -73,6 +75,7 @@ TEST(PuttingElementInList, insert_AddingElementInEmptyist_ExpectEquel) {    // t
 	EXPECT_EQ(elem->value, 5);
 	EXPECT_EQ(size, 1);
 }
+
 TEST(PuttinfElementInList, insert_AddingElementsCheckOrder_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
@@ -93,6 +96,7 @@ TEST(PuttinfElementInList, insert_AddingElementsCheckOrder_ExpectEquel) {
 	EXPECT_TRUE(elem3->value < elem4->value);
 	EXPECT_EQ(size, 4);
 }
+
 TEST(PuttingElementInList, insert_AddingElementsCheckOrder_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
@@ -107,6 +111,7 @@ TEST(PuttingElementInList, insert_AddingElementsCheckOrder_ExpectEquel) {
 	EXPECT_TRUE(elem1->value < elem2->value);
 	EXPECT_EQ(size, 2);
 }
+
 TEST(PuttingElementInList, insert_AddingExistingElements1_ExpectEquel) {
 	struct node tail { INFINITY, NULL, NULL };
 	struct node head = { (-1) * INFINITY, &tail, NULL };
@@ -121,6 +126,7 @@ TEST(PuttingElementInList, insert_AddingExistingElements1_ExpectEquel) {
 	elem = elem->next;
 	EXPECT_EQ(elem->next->value, INFINITY);
 }
+
 TEST(PuttingElementInList, insert_AddingExistingElements2_ExpectEquel) {
 	struct node tail { INFINITY, NULL, NULL };
 	struct node head = { (-1) * INFINITY, &tail, NULL };
@@ -131,6 +137,7 @@ TEST(PuttingElementInList, insert_AddingExistingElements2_ExpectEquel) {
 	node* elem = &head;
 	EXPECT_EQ(size, 2);
 }
+
 TEST(DeleteElementInList, deleteEl_DeleteExistingElement_ExpectEquel) {
 	struct node tail { INFINITY, NULL, NULL };
 	node second = { 15, &tail, NULL };
@@ -140,6 +147,7 @@ TEST(DeleteElementInList, deleteEl_DeleteExistingElement_ExpectEquel) {
 	EXPECT_EQ(deleteEl(&head, 13, &size), 0);
 	EXPECT_EQ(1, size);
 }
+
 TEST(DeleteElementInList, deleteEl_DeleteNotExistingElement_ExpectEquel) {
 	struct node tail { INFINITY, NULL, NULL };
 	node second = { 3, &tail, NULL };
@@ -149,6 +157,7 @@ TEST(DeleteElementInList, deleteEl_DeleteNotExistingElement_ExpectEquel) {
 	EXPECT_EQ(deleteEl(&head, 18, &size), -1);
 	EXPECT_EQ(2, size);
 }
+
 TEST(DeleteElementInList, deleteEl_DeleteElementInEmptyList_ExpectEquel) {
 	struct node tail { INFINITY, NULL, NULL };
 	struct node head = { (-1) * INFINITY, &tail, NULL };
@@ -156,6 +165,7 @@ TEST(DeleteElementInList, deleteEl_DeleteElementInEmptyList_ExpectEquel) {
 	EXPECT_EQ(deleteEl(&head, 18, &size), -1);
 	EXPECT_EQ(0, size);
 }
+
 TEST(DeleteElementInList, deleteEl_DeleteElementInTwoLevelList_ExpectEquel) {
 	node tail{ INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
