@@ -8,117 +8,123 @@ TEST(ListCreation, createList_CreateNewList_ExpectTrue) {
 	EXPECT_TRUE(newList);
 	EXPECT_TRUE(newList->head);
 	EXPECT_TRUE(newList->tail);
-	EXPECT_EQ(newList->size, 0);
+	free(newList->head);
+	free(newList->tail);
+	free(newList);
 }
 
-TEST(SearchElementInList, search_SearchExistingElementInOneLevel_ExpectTrue) {
-
+TEST(SearchElementInList, searchElement_SearchExistingElementInOneLevel_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
 	node third = { 5, &tail, NULL };
 	node second = { 3, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
-	list mylist = { &head, &tail, 2 };
-	node* elem = search(&head, 3);
-	EXPECT_TRUE(elem);
+	list myList = { &head, &tail };
+	EXPECT_TRUE(searchElement(&myList, 3));
 }
 
-TEST(SearchElementInList, search_SearchNotExistingElementInOneLevel_ExpectTrue) {
-
+TEST(SearchElementInList, searchElement_SearchNotExistingElementInOneLevel_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
 	node third = { 5, &tail, NULL };
 	node second = { 3, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
-	list mylist = { &head, &tail, 2 };
-	node* elem = search(&head, 2);
-	EXPECT_FALSE(elem);
+	list myList = { &head, &tail};
+	EXPECT_FALSE(searchElement(&myList, 2));
 }
 
-TEST(SearchElementInList, search_SearchExistingElementInTwoFullLevels_ExpectTrue) {
+TEST(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
-	node third = { 5, &tail, NULL };
+	node third = { 5, &fourth, NULL };
 	node second = { 3, &third, NULL };
 	node first = { -5, &second, NULL };
-	node fourth2 = { 13, &tail, &fourth };
+	node head = { (-1) * INFINITY, &first, NULL };        
+
+	node tail2{ INFINITY, NULL, NULL };
+	node fourth2 = { 13, &tail2, &fourth };
 	node third2 = { 5, &tail, &third };
 	node second2 = { 3, &third, &second };
 	node first2 = { -5, &second, &first };
-	node head = { (-1) * INFINITY, &first2, NULL };
-	list mylist = { &head, &tail, 2 };
-	node* elem = search(&head, 5);
-	EXPECT_TRUE(elem);
+	node head2 = { (-1) * INFINITY, &first2, NULL };
+
+	list myList = { &head, &tail, NULL};
+	list myList2 = { &head, &tail, &myList };
+	EXPECT_TRUE(searchElement(&myList2, 5));
 }
 
-TEST(SearchElementInList, search_SearchExistingElementInTwoNotFullLevels_ExpectTrue) {
+
+
+
+TEST(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_ExpectTrue) {
 
 	node tail{ INFINITY, NULL, NULL };
-	node fourth = { 23, &tail, NULL };
-	node third = { 15, &tail, NULL };
-	node second = { 13, &third, NULL };
-	node first = { -8, &second, NULL };
-	node third2 = { 15, &tail, &third };
-	node first2 = { -8, &second, &first };
-	node head = { (-1) * INFINITY, &first2, NULL };
-	list mylist = { &head, &tail, 2 };
-	node* elem = search(&head, 15);
-	EXPECT_TRUE(elem);
+	node fourth = { 13, &tail, NULL };
+	node third = { 5, &fourth, NULL };
+	node second = { 3, &third, NULL };
+	node first = { -5, &second, NULL };
+	node head = { (-1) * INFINITY, &first, NULL };
+
+	node tail2{ INFINITY, NULL, NULL };
+	node third2 = { 5, &tail2, &third };	
+	node first2 = { -5, &third2, &first };
+	node head2 = { (-1) * INFINITY, &first2, NULL };
+
+	list myList = { &head, &tail, NULL };
+	list myList2 = { &head, &tail, &myList };
+	EXPECT_TRUE(searchElement(&myList2, 13));
 }
 
-TEST(PuttingElementInList, insert_AddingElementInEmptyist_ExpectEquel) {    // test insert
+// to do: 3 level
+// too do: values chnge
+// to do: подключить библиотеку перед тестами
+
+
+TEST(PuttingElementInList, listInsert_AddingElementInEmptyist_ExpectEquel) {    
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
-	list mylist = { &head, &tail, 0 };
-	list* ptrList = &mylist;
-	int size = 0;
-	insert(&head, 5, &size);
-	node* elem = ptrList->head->next;
-	EXPECT_EQ(elem->value, 5);
-	EXPECT_EQ(size, 1);
+	list myList = { &head, &tail };
+	list* ptrList = &myList;
+	listInsert(&myList, 5);
+	EXPECT_EQ(ptrList->head->next->value, 5);
 }
 
-TEST(PuttinfElementInList, insert_AddingElementsCheckOrder_ExpectEquel) {
+
+// to do: проверить что создаются уровни проврка (EXPECT_TRUE(list-> down))
+
+TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
-	list mylist = { &head, &tail, 0 };
-	list* ptrList = &mylist;
-	int size = 0;
-	insert(&head, 5, &size);
-	insert(&head, 9, &size);
-	insert(&head, 14, &size);
-	insert(&head, 2, &size);
+	list myList = { &head, &tail };
+	list* ptr = &myList;
+	listInsert(ptr, 5);
+	listInsert(ptr, 9);
+	listInsert(ptr, 14);
+	listInsert(ptr, 2);
 	node* elem = &head;
 	node* elem1 = elem->next;
 	node* elem2 = elem1->next;
 	node* elem3 = elem2->next;
 	node* elem4 = elem3->next;
-	EXPECT_TRUE(elem1->value < elem2->value);
-	EXPECT_TRUE(elem2->value < elem3->value);
-	EXPECT_TRUE(elem3->value < elem4->value);
-	EXPECT_EQ(size, 4);
+	EXPECT_EQ(elem1->value, 2);
+	EXPECT_EQ(elem2->value, 5);
+	EXPECT_EQ(elem3->value, 9);
+	EXPECT_EQ(elem4->value, 14);
+	EXPECT_TRUE(ptr->down);
+	free(elem1);
+	free(elem2);
+	free(elem3);
+	free(elem4);
 }
 
-TEST(PuttingElementInList, insert_AddingElementsCheckOrder_ExpectEquel) {
-	node tail = { INFINITY, NULL, NULL };
+
+
+TEST(PuttingElementInList, listInsert_AddingExistingElements1_ExpectEquel) {
+	node tail { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
-	list mylist = { &head, &tail, 0 };
-	list* ptrList = &mylist;
-	int size = 0;
-	insert(&head, 14, &size);
-	insert(&head, 9, &size);
-	node* elem = &head;
-	node* elem1 = elem->next;
-	node* elem2 = elem1->next;
-	EXPECT_TRUE(elem1->value < elem2->value);
-	EXPECT_EQ(size, 2);
-}
-
-TEST(PuttingElementInList, insert_AddingExistingElements1_ExpectEquel) {
-	struct node tail { INFINITY, NULL, NULL };
-	struct node head = { (-1) * INFINITY, &tail, NULL };
-	int size = 0;
-	insert(&head, 7, &size);
-	insert(&head, 3, &size);
-	insert(&head, 7, &size);
+	list myList = { &head, &tail };
+	list* ptr = &myList;
+	listInsert(ptr, 7);
+	listInsert(ptr, 3);
+	listInsert(ptr, 7);
 	node* elem = &head;
 	EXPECT_EQ(elem->next->value, 3);
 	elem = elem->next;
@@ -127,68 +133,61 @@ TEST(PuttingElementInList, insert_AddingExistingElements1_ExpectEquel) {
 	EXPECT_EQ(elem->next->value, INFINITY);
 }
 
-TEST(PuttingElementInList, insert_AddingExistingElements2_ExpectEquel) {
-	struct node tail { INFINITY, NULL, NULL };
-	struct node head = { (-1) * INFINITY, &tail, NULL };
-	int size = 0;
-	insert(&head, 11, &size);
-	insert(&head, 2, &size);
-	insert(&head, 11, &size);
-	node* elem = &head;
-	EXPECT_EQ(size, 2);
-}
 
-TEST(DeleteElementInList, deleteEl_DeleteExistingElement_ExpectEquel) {
-	struct node tail { INFINITY, NULL, NULL };
-	node second = { 15, &tail, NULL };
-	node first = { 13, &second, NULL };
-	struct node head = { (-1) * INFINITY, &first, NULL };
-	int size = 2;
-	EXPECT_EQ(deleteEl(&head, 13, &size), 0);
-	EXPECT_EQ(1, size);
-}
 
-TEST(DeleteElementInList, deleteEl_DeleteNotExistingElement_ExpectEquel) {
-	struct node tail { INFINITY, NULL, NULL };
-	node second = { 3, &tail, NULL };
-	node first = { 9, &second, NULL };
-	struct node head = { (-1) * INFINITY, &first, NULL };
-	int size = 2;
-	EXPECT_EQ(deleteEl(&head, 18, &size), -1);
-	EXPECT_EQ(2, size);
-}
 
-TEST(DeleteElementInList, deleteEl_DeleteElementInEmptyList_ExpectEquel) {
-	struct node tail { INFINITY, NULL, NULL };
-	struct node head = { (-1) * INFINITY, &tail, NULL };
-	int size = 0;
-	EXPECT_EQ(deleteEl(&head, 18, &size), -1);
-	EXPECT_EQ(0, size);
-}
-
-TEST(DeleteElementInList, deleteEl_DeleteElementInTwoLevelList_ExpectEquel) {
+TEST(DeleteElementInList, deleteElement_DeleteExistingElementInTwoLevelList_ExpectEquel) {
 	node tail{ INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
-	node third = { 5, &fourth,    NULL };
-	node second = { 3, &third, NULL };
+	node* third = (node*)malloc(sizeof(node));
+	third->next = &fourth;
+	third->down = NULL;
+	third->value = 5;
+	node second = { 3, third, NULL };
 	node first = { -5, &second, NULL };
-	node fourth2 = { 13, &tail, &fourth };
-	node third2 = { 5, &fourth, &third };
-	node second2 = { 3, &third2, &second };
-	node first2 = { -5, &second2, &first };
-	node head = { (-1) * INFINITY, &first2, NULL };
-	list mylist = { &head, &tail, 2 };
-	int size = 4;
-	int boolean = deleteEl(&head, 5, &size);
-	EXPECT_EQ(0, boolean);
-	EXPECT_EQ(3, size);
-	node* p1 = &second2;
-	node* p2 = &fourth2;
-	node* p3 = &second;
-	node* p4 = &fourth;
-	EXPECT_EQ(p1->next->value, p2->value);
-	EXPECT_EQ(p3->next->value, p4->value);
+	node head = { (-1) * INFINITY, &first, NULL };
+
+	node tail2{ INFINITY, NULL, NULL };
+	node* third2 = (node*)malloc(sizeof(node));
+	third2->next = &tail2;
+	third2->down = third;
+	third2->value = 5;
+	node first2 = { -5, third2, &first };
+	node head2 = { (-1) * INFINITY, &first2, NULL };
+
+	list myList = { &head, &tail, NULL };
+	list myList2 = { &head, &tail, &myList };
+	list* ptr = &myList2;
+	deleteElement(ptr, 5);
+	EXPECT_EQ((&second)->next->value, (&fourth)->value);
+	EXPECT_EQ((&first2)->next->value, (&tail2)->value);
+
 }
 
 
-
+//TEST(DeleteElementInList, deleteEl_DeleteElementInTwoLevelList_ExpectEquel) {
+//	node tail{ INFINITY, NULL, NULL };
+//	node fourth = { 13, &tail, NULL };
+//	node third = { 5, &fourth,    NULL };
+//	node second = { 3, &third, NULL };
+//	node first = { -5, &second, NULL };
+//	node fourth2 = { 13, &tail, &fourth };
+//	node third2 = { 5, &fourth, &third };
+//	node second2 = { 3, &third2, &second };
+//	node first2 = { -5, &second2, &first };
+//	node head = { (-1) * INFINITY, &first2, NULL };
+//	list mylist = { &head, &tail };
+//	int size = 4;
+//	//int boolean = deleteEl( &head, 5);
+//	//EXPECT_EQ(0, boolean);
+//	EXPECT_EQ(3, size);
+//	node* p1 = &second2;
+//	node* p2 = &fourth2;
+//	node* p3 = &second;
+//	node* p4 = &fourth;
+//	EXPECT_EQ(p1->next->value, p2->value);
+//	EXPECT_EQ(p3->next->value, p4->value);
+//}
+//
+//
+//

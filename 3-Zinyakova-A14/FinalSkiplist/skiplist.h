@@ -9,15 +9,18 @@ typedef struct node {
 typedef struct list {
 	struct node* head;
 	struct node* tail;
-	int size;
+	struct list* down;
 }list;
 
-node* buildNode(int key, node* down_node, node* next_node);
-struct list* createList();
-node* search(node* elem, int key);
-node* insert(node* elem, int key, int* size);
-void printList(node* elem);
-int deleteEl(node* element, int key, int* size);
+
+list* createList();
+void deleteList(list* myList);
+void listInsert(list* myList, int key);
+int searchElement(list* mylist, int key);
+void deleteElement(list* myList, int key);
+
+
+
 
 
 

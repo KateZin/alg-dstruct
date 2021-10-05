@@ -18,8 +18,8 @@ node* buildNode(int key, node* downNode, node* nextNode) {
 	return _buildNode((float)key, downNode, nextNode);
 }
 
-struct list* createList() {
-	struct list* newList = (list*)malloc(sizeof(list));    
+list* createList() {
+	list* newList = (list*)malloc(sizeof(list));    
 	if (newList == NULL) {
 		printf("error in memory");
 		return NULL;
@@ -29,7 +29,6 @@ struct list* createList() {
 	newList->head = head;
 	newList->tail = tail;
 	head->next = tail;
-	newList->size = 0;
 	return newList;
 }
 
@@ -51,23 +50,20 @@ char coin() {
 	return rand() % 2;
 }
 
-node* insert(node* elem, int key, int* size) {
+node* insert(node* elem, int key) {
 	if (search(elem, key)) {
 		printf("element is already existed");
 		return NULL;
 	}
-	else
-		*size = *size + 1;
 	while (elem->next != NULL && elem->next->value < key) {
 		elem = elem->next;
 	}
-
 	node* downNode;
 	if (elem->down == NULL) {
 		downNode = NULL;
 	}
 	else {
-		downNode = insert(elem->down, key, size);
+		downNode = insert(elem->down, key);
 	}
 	if (downNode != NULL || elem->down == NULL) {
 		elem->next = buildNode(key, downNode, elem->next);
@@ -90,26 +86,64 @@ void printList(node* elem) {
 	printf("\n");
 }
 
-int deleteEl(node* elem , int key, int* size) {
-	if (size == 0) {
-		printf("empty list");
-		return -1;
-	}
-	if (search(elem, key) == NULL) {
-		printf("Such element doesn't exist");
-		return -1;
-	}
+void deleteEl(node* elem , int key) {
 	while (elem->next != NULL && elem->next->value < key)
 		elem = elem->next;
 	if (elem->down != NULL)
-		deleteEl(elem->down, key, size);
+		deleteEl(elem->down, key);
 	if (elem->next != NULL && elem->next->value == key) {
+		node* toDel = elem->next;
 		elem->next = elem->next->next;
-		if (elem->down == NULL) {
-			(*size) = (*size) - 1;
-		}
+		free(toDel);
 	}
-	return 0;
 }
 
+
+void listInsert(list* myList, int key) {
+	if (search(myList->head, key)) {
+		return;
+	}
+	node* newnode = insert(myList->head, key);
+	if (newnode != NULL) {
+		list* newList = createList();
+		node* addnode = buildNode(key, newnode, newList->tail);
+		newList->head->next = addnode;
+		newList->head->down = myList->head;
+		newList->down = myList;
+		*myList = *newList;
+	}
+}
+
+void deleteElement(list* myList, int key) {
+	if (search(myList->head, key) == NULL) {
+		return;
+	}
+	else {
+		deleteEl(myList->head, key);
+	}
+}
+
+
+// если возвращает 1 - элемент найден, 0 - не найден
+int searchElement(list* mylist, int key) {
+	node* elem = mylist->head;
+	if (search(elem, key) == NULL)
+		return 0;
+	else
+		return 1;
+}
+
+void deleteList(list* myList) {
+	
+		while (myList != NULL) {
+			while (myList->head->next != myList->tail) {
+				deleteElement(myList, myList->head->next->value);
+			}
+			list* toDel = myList;
+			myList = myList->down;
+			free(toDel->head);
+			free(toDel->tail);
+			free(toDel);
+		}
+}
 
