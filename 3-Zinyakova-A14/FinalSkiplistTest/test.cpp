@@ -120,6 +120,32 @@ TEST(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel) {
 	EXPECT_EQ(ptrList->next->next->value, 3);
 }
 
+TEST(PuttingElementByFirstNode, insert_AddingElementInThreeLevelList_ExpectEquel) {
+	node tail{ INFINITY, NULL, NULL };
+	node fourth = { 13, &tail, NULL };
+	node third = { 5, &fourth, NULL };
+	node second = { 3, &third, NULL };
+	node first = { -5, &second, NULL };
+	node head = { (-1) * INFINITY, &first, NULL };
+
+	node tail2 = { INFINITY, NULL, &tail };
+	node third2 = { 5, &tail2, &third };
+	node first2 = { -5, &third2, &first };
+	node head2 = { (-1) * INFINITY, &first2, &head };
+
+	node tail3 = { INFINITY, NULL, &tail2 };
+	node third3 = { 5, &tail3, &third2 };
+	node head3 = { (-1) * INFINITY, &third3, &head2 };
+
+	list myList = { &head, &tail, NULL };
+	list myList2 = { &head, &tail, &myList };
+	list myList3 = { &head, &tail, &myList2 };
+	listInsert(&myList3, 1);
+	EXPECT_EQ((&myList)->head->next->next->value, 1);
+	EXPECT_EQ((&myList2)->head->next->next->value, 1);
+	EXPECT_EQ((&myList3)->head->next->value, 1);
+}
+
 TEST(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
@@ -147,7 +173,6 @@ TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
 	EXPECT_EQ(elem2->value, 5);
 	EXPECT_EQ(elem3->value, 9);
 	EXPECT_EQ(elem4->value, 14);
-	EXPECT_TRUE(ptr->down);
 	free(elem1);
 	free(elem2);
 	free(elem3);
