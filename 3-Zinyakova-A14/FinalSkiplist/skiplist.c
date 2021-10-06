@@ -1,6 +1,10 @@
 ﻿#include <stdio.h>
 #include"skiplist.h"
 #include<math.h>
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
 
 node* _buildNode(float key, node* downNode, node* nextNode) {
 	node* newnode = (node*)malloc(sizeof(node)); 
@@ -34,16 +38,21 @@ list* createList() {
 
 node* search(node* elem, int key) {
 	key = (float)key;
-	while (elem->next->value < key)
+	while (elem->next->value < key) {
 		elem = elem->next;
-	if (elem->next->value == key)
+	}
+	if (elem->next->value == key) {
 		return elem->next;
-	else if (elem->next->value > key)
+	}
+	else if (elem->next->value > key) {
 		elem = elem->down;
-	if (elem == NULL)
+	}
+	if (elem == NULL) {
 		return NULL;
-	else
+	}
+	else {
 		search(elem, key);
+	}
 }
 
 char coin() {
@@ -75,29 +84,41 @@ node* insert(node* elem, int key) {
 	return NULL;
 }
 
-void printList(node* elem) {
-	int i = 0;
-	node* curNode = elem;
-	while (curNode->next->value == INFINITY) {
-		if ((curNode->value != -1*INFINITY) && (curNode->value != INFINITY))
-			printf("%d ", (int)curNode->value);
-		curNode = curNode->next;
-	}
-	printf("\n");
-}
 
-void deleteEl(node* elem , int key) {
-	while (elem->next != NULL && elem->next->value < key)
-		elem = elem->next;
-	if (elem->down != NULL)
-		deleteEl(elem->down, key);
-	if (elem->next != NULL && elem->next->value == key) {
-		node* toDel = elem->next;
-		elem->next = elem->next->next;
-		free(toDel);
+//void deleteEl(node* elem , int key) {
+//	while (elem->next != NULL && elem->next->value < key)
+//		elem = elem->next;
+//	if (elem->down != NULL)
+//		deleteEl(elem->down, key);
+//	if (elem->next != NULL && elem->next->value == key) {
+//		node* toDel = elem->next;
+//		elem->next = elem->next->next;
+//		free(toDel);
+//	}
+//}
+
+
+void deleteEl(node* elem, int key) {
+	node* prev;
+	node* next;
+	
+	while (elem != NULL) {
+		while (elem->next != NULL && elem->next->value < key) {
+			elem = elem->next;
+		}
+		if (elem->next->value == key) {
+			prev = elem;
+			next = elem->next->next;
+			prev->next = next;
+			free(elem->next);
+			if (elem->down != NULL) {
+				elem = elem->down;
+			}
+			else
+				break;
+		}
 	}
 }
-
 
 void listInsert(list* myList, int key) {
 	if (search(myList->head, key)) {
@@ -127,10 +148,12 @@ void deleteElement(list* myList, int key) {
 // если возвращает 1 - элемент найден, 0 - не найден
 int searchElement(list* mylist, int key) {
 	node* elem = mylist->head;
-	if (search(elem, key) == NULL)
+	if (search(elem, key) == NULL) {
 		return 0;
-	else
+	}
+	else {
 		return 1;
+	}
 }
 
 void deleteList(list* myList) {

@@ -1,14 +1,12 @@
 #include "skiplist.h"
 #include<math.h>
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+
 
 void main() {
-	node tail = { INFINITY, NULL, NULL };
-	node head = { (-1) * INFINITY, &tail, NULL };
-	list mylist = { &head, &tail };
-	list* ptrList = &mylist;
-	int size = 0;
-	insert(&head, 5, &size);
-	insert(&head, 4, &size);
-	node* elem = search(&head, 5);
-	deleteEl(&head, 4, &size);
+	
+		
 }
