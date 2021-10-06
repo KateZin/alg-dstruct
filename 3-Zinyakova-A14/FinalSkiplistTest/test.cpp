@@ -13,7 +13,6 @@ TEST(ListCreation, createList_CreateNewList_ExpectTrue) {
 	free(newList);
 }
 
-
 TEST(SearchElementByfirstNode, search_SearchExistingElementInOneLevel_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
 	node third = { 4, &tail, NULL };
@@ -23,7 +22,6 @@ TEST(SearchElementByfirstNode, search_SearchExistingElementInOneLevel_ExpectTrue
 	EXPECT_TRUE(search(&head, 2));
 }
 
-
 TEST(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
 	node third = { 4, &tail, NULL };
@@ -32,8 +30,6 @@ TEST(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_ExpectT
 	list myList = { &head, &tail };
 	EXPECT_FALSE(search(&head, 1));
 }
-
-
 
 TEST(SearchElementInList, searchElement_SearchExistingElementInOneLevel_ExpectTrue) {
 	node tail{ INFINITY, NULL, NULL };
@@ -49,7 +45,7 @@ TEST(SearchElementInList, searchElement_SearchNotExistingElementInOneLevel_Expec
 	node third = { 5, &tail, NULL };
 	node second = { 3, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
-	list myList = { &head, &tail};
+	list myList = { &head, &tail };
 	EXPECT_FALSE(searchElement(&myList, 2));
 }
 
@@ -59,7 +55,7 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_Exp
 	node third = { 5, &fourth, NULL };
 	node second = { 3, &third, NULL };
 	node first = { -5, &second, NULL };
-	node head = { (-1) * INFINITY, &first, NULL };        
+	node head = { (-1) * INFINITY, &first, NULL };
 
 	node tail2{ INFINITY, NULL, NULL };
 	node fourth2 = { 13, &tail2, &fourth };
@@ -68,16 +64,12 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_Exp
 	node first2 = { -5, &second, &first };
 	node head2 = { (-1) * INFINITY, &first2, NULL };
 
-	list myList = { &head, &tail, NULL};
+	list myList = { &head, &tail, NULL };
 	list myList2 = { &head, &tail, &myList };
 	EXPECT_TRUE(searchElement(&myList2, 5));
 }
 
-
-
-
 TEST(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_ExpectTrue) {
-
 	node tail{ INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node third = { 5, &fourth, NULL };
@@ -86,7 +78,7 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_
 	node head = { (-1) * INFINITY, &first, NULL };
 
 	node tail2{ INFINITY, NULL, NULL };
-	node third2 = { 5, &tail2, &third };	
+	node third2 = { 5, &tail2, &third };
 	node first2 = { -5, &third2, &first };
 	node head2 = { (-1) * INFINITY, &first2, NULL };
 
@@ -95,10 +87,7 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_
 	EXPECT_TRUE(searchElement(&myList2, 13));
 }
 
-
-
 TEST(SearchElementInList, searchElement_SearchExistingElementInThreeNotFullLevels_ExpectTrue) {
-
 	node tail{ INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node third = { 5, &fourth, NULL };
@@ -120,8 +109,6 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInThreeNotFullLevel
 	list myList3 = { &head, &tail, &myList2 };
 	EXPECT_TRUE(searchElement(&myList3, 13));
 }
-// to do: 3 level done+
-// to do: подключить библиотеку перед тестами
 
 TEST(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
@@ -133,9 +120,7 @@ TEST(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel) {
 	EXPECT_EQ(ptrList->next->next->value, 3);
 }
 
-
-
-TEST(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel) {    
+TEST(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
 	list myList = { &head, &tail };
@@ -143,9 +128,6 @@ TEST(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel) {
 	listInsert(&myList, 5);
 	EXPECT_EQ(ptrList->head->next->value, 5);
 }
-
-
-// to do: проверить что создаются уровни проврка (EXPECT_TRUE(list-> down))
 
 TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
 	node tail = { INFINITY, NULL, NULL };
@@ -172,10 +154,8 @@ TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
 	free(elem4);
 }
 
-
-
 TEST(PuttingElementInList, listInsert_AddingExistingElements1_ExpectEquel) {
-	node tail { INFINITY, NULL, NULL };
+	node tail{ INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
 	list myList = { &head, &tail };
 	list* ptr = &myList;
@@ -190,60 +170,141 @@ TEST(PuttingElementInList, listInsert_AddingExistingElements1_ExpectEquel) {
 	EXPECT_EQ(elem->next->value, INFINITY);
 }
 
+TEST(DeleteElementByNode, deleteEl_DeleteExistingElementList_ExpectEquel) {
+	node tail{ INFINITY, NULL, NULL };
+	node* first = (node*)malloc(sizeof(node));
+	if (first == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	first->next = &tail;
+	first->down = NULL;
+	first->value = 5;
+	node head = { (-1) * INFINITY, first, NULL };
+	list myList = { &head, &tail, NULL };
+	node* elem = (&myList)->head;
+	deleteEl(elem, 5);
+	EXPECT_EQ((&myList)->head->next->value, (&tail)->value);
+}
 
-//
-//
-//TEST(DeleteElementInList, deleteElement_DeleteExistingElementInTwoLevelList_ExpectEquel) {
-//	node tail{ INFINITY, NULL, NULL };
-//	node fourth = { 13, &tail, NULL };
-//	node* third = (node*)malloc(sizeof(node));
-//	third->next = &fourth;
-//	third->down = NULL;
-//	third->value = 5;
-//	node second = { 3, third, NULL };
-//	node first = { -5, &second, NULL };
-//	node head = { (-1) * INFINITY, &first, NULL };
-//
-//	node tail2{ INFINITY, NULL, NULL };
-//	node* third2 = (node*)malloc(sizeof(node));
-//	third2->next = &tail2;
-//	third2->down = third;
-//	third2->value = 5;
-//	node first2 = { -5, third2, &first };
-//	node head2 = { (-1) * INFINITY, &first2, NULL };
-//
-//	list myList = { &head, &tail, NULL };
-//	list myList2 = { &head2, &tail2, &myList };
-//	list* ptr = &myList2;
-//	deleteElement(ptr, 5);
-//	//EXPECT_EQ((&second)->next->value, (&fourth)->value);
-//	//EXPECT_EQ((&first2)->next->value, (&tail2)->value);
-//}
+TEST(DeleteElementInList, deleteElement_DeleteExistingElementInTwoLevelList_ExpectEquel) {
+	node tail{ INFINITY, NULL, NULL };
+	node fourth = { 13, &tail, NULL };
+	node* third = (node*)malloc(sizeof(node));
+	if (third == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	third->next = &fourth;
+	third->down = NULL;
+	third->value = 5;
+	node second = { 3, third, NULL };
+	node first = { -5, &second, NULL };
+	node head = { (-1) * INFINITY, &first, NULL };
 
+	node tail2{ INFINITY, NULL, &tail };
+	node* third2 = (node*)malloc(sizeof(node));
+	if (third2 == NULL) {
+		printf("error in memory");
+		exit;
+	}
+	third2->next = &tail2;
+	third2->down = third;
+	third2->value = 5;
+	node first2 = { -5, third2, &first };
+	node head2 = { (-1) * INFINITY, &first2, &head };
+	list myList = { &head, &tail, NULL };
+	list myList2 = { &head2, &tail2, &myList };
+	list* ptr = &myList2;
+	deleteElement(ptr, 5);
+	EXPECT_EQ((&second)->next->value, (&fourth)->value);
+	EXPECT_EQ((&first2)->next->value, (&tail2)->value);
+}
 
-//TEST(DeleteElementInList, deleteEl_DeleteElementInTwoLevelList_ExpectEquel) {
-//	node tail{ INFINITY, NULL, NULL };
-//	node fourth = { 13, &tail, NULL };
-//	node third = { 5, &fourth,    NULL };
-//	node second = { 3, &third, NULL };
-//	node first = { -5, &second, NULL };
-//	node fourth2 = { 13, &tail, &fourth };
-//	node third2 = { 5, &fourth, &third };
-//	node second2 = { 3, &third2, &second };
-//	node first2 = { -5, &second2, &first };
-//	node head = { (-1) * INFINITY, &first2, NULL };
-//	list mylist = { &head, &tail };
-//	int size = 4;
-//	//int boolean = deleteEl( &head, 5);
-//	//EXPECT_EQ(0, boolean);
-//	EXPECT_EQ(3, size);
-//	node* p1 = &second2;
-//	node* p2 = &fourth2;
-//	node* p3 = &second;
-//	node* p4 = &fourth;
-//	EXPECT_EQ(p1->next->value, p2->value);
-//	EXPECT_EQ(p3->next->value, p4->value);
-//}
-//
-//
-//
+TEST(DeleteElementInList, deleteElement_DeleteElementCheckUpperLevelDelete_ExpectEquelTrue) {
+	node tail{ INFINITY, NULL, NULL };
+	node fourth = { 13, &tail, NULL };
+	node* third = (node*)malloc(sizeof(node));
+	if (third == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	third->next = &fourth;
+	third->down = NULL;
+	third->value = 5;
+	node second = { 3, third, NULL };
+	node first = { -5, &second, NULL };
+	node head = { (-1) * INFINITY, &first, NULL };
+	node* tail2 = (node*)malloc(sizeof(node));
+	if (tail2 == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	tail2->value = INFINITY;
+	tail2->next = NULL;
+	tail2->down = &tail;
+	node* third2 = (node*)malloc(sizeof(node));
+	if (third == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	third2->next = tail2;
+	third2->down = third;
+	third2->value = 5;
+	node* head2 = (node*)malloc(sizeof(node));
+	if (head2 == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	head2->value = -1 * INFINITY;
+	head2->next = third2;
+	head2->down = &head;
+	list myList = { &head, &tail, NULL };
+	list* myList2 = (list*)malloc(sizeof(list));
+	if (myList2 == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	myList2->head = head2;
+	myList2->tail = tail2;
+	myList2->down = &myList;
+	deleteElement(myList2, 5);
+	EXPECT_EQ((&second)->next->value, (&fourth)->value);
+	EXPECT_FALSE(myList2->down);
+}
+
+TEST(DeleteList, deleteList_DeleteTwoLevelList_ExpectEquel) {
+	node* tail = (node*)malloc(sizeof(node));
+	if (tail == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	tail->down = NULL;
+	tail->next = NULL;
+	tail->value = INFINITY;
+	node* elem1 = (node*)malloc(sizeof(node));
+	if (elem1 == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	elem1->value = 1;
+	elem1->next = tail;
+	elem1->down = NULL;
+	node* head = (node*)malloc(sizeof(node));
+	if (head == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	head->value = -1 * INFINITY;
+	head->down = NULL;
+	head->next = elem1;
+	list* myList1 = (list*)malloc(sizeof(list));
+	if (myList1 == NULL) {
+		printf("error  in memory");
+		exit;
+	}
+	myList1->head = head;
+	myList1->tail = tail;
+	myList1->down = NULL;
+	deleteList(myList1);
+}

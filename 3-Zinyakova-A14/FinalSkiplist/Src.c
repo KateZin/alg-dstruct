@@ -1,12 +1,12 @@
 #include "skiplist.h"
 #include<math.h>
-#include <crtdbg.h>
-#define _CRTDBG_MAP_ALLOC
-#define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 
 
 void main() {
-	
-		
+	list* myList = createList();
+	listInsert(myList, 5);
+	listInsert(myList, 10);
+	searchElement(myList, 5);
+	deleteList(myList, 5);
 }
