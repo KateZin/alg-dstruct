@@ -1,7 +1,6 @@
 ﻿#include <stdio.h>
 #include"skiplist.h"
 #include<math.h>
-#include <crtdbg.h>
 #pragma warning(disable:4996)
 
 node* _buildNode(float key, node* downNode, node* nextNode) {

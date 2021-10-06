@@ -12,7 +12,6 @@ typedef struct list {
 	struct list* down;
 }list;
 
-
 list* createList();
 void deleteList(list* myList);
 void listInsert(list* myList, int key);
