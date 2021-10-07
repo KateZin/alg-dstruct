@@ -14,9 +14,9 @@ typedef struct list {
 
 list* createList();
 void deleteList(list* myList);
-void listInsert(list* myList, int key);
+void listInsert(list** myList, int key);
 int searchElement(list* mylist, int key);
-void deleteElement(list* myList, int key);
+void deleteElement(list** myList, int key);
 
 
 

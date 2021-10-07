@@ -92,7 +92,8 @@ node* insert(node* elem, int key) {
 	return NULL;
 }
 
-void listInsert(list* myList, int key) {
+void listInsert(list** ptrList, int key) {
+	list* myList = *ptrList;
 	if (search(myList->head, key)) {
 		return;
 	}
@@ -103,7 +104,7 @@ void listInsert(list* myList, int key) {
 		newList->head->next = addnode;
 		newList->head->down = myList->head;
 		newList->down = myList;
-		*myList = *newList;
+		*ptrList = newList;
 	}
 }
 
@@ -129,7 +130,8 @@ void deleteEl(node* elem, int key) {
 
 }
 
-void deleteElement(list* myList, int key) {
+void deleteElement(list** ptrList, int key) {
+	list* myList = *ptrList;
 	if (search(myList->head, key) == NULL) {
 		return;
 	}
@@ -143,14 +145,15 @@ void deleteElement(list* myList, int key) {
 			free(temp2);
 			free(temp1);
 			free(toDel);
-			*myList = *downList;
+			myList = downList;
+			*ptrList = downList;
 		}
 	}
 }
 
 void deleteList(list* myList) {
 	while (myList->head->next != myList->tail) {
-		deleteElement(myList, myList->head->next->value);
+		deleteElement(&myList, myList->head->next->value);
 	}
 	free(myList->head);
 	free(myList->tail);
