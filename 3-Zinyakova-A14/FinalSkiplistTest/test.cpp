@@ -1,6 +1,5 @@
 #include "pch.h"
-#include"skiplist.h"
-#include"skiplist.c"
+#include"Header.h"
 #include <math.h>
 
 TEST(ListCreation, createList_CreateNewList_ExpectTrue) {
