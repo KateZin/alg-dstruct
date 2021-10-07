@@ -2,6 +2,7 @@
 #include"Header.h"
 #include <math.h>
 #include <assert.h>
+#include <stdlib.h>
 
 TEST(ListCreation, createList_CreateNewList_ExpectTrue) {
 	list* newList = createList();
@@ -149,8 +150,13 @@ TEST(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel) {
 	node head = { (-1) * INFINITY, &tail, NULL };
 	list myList = { &head, &tail };
 	list* ptrList = &myList;
+	srand(1);
 	listInsert(&ptrList, 5);
+	EXPECT_TRUE(ptrList->down);
 	EXPECT_EQ(ptrList->head->next->value, 5);
+	free(ptrList->head->next);
+	free(ptrList->down->head->next);
+	free(ptrList);
 }
 
 TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
@@ -158,39 +164,47 @@ TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
 	node head = { (-1) * INFINITY, &tail, NULL };
 	list myList = { &head, &tail };
 	list* ptr = &myList;
+	srand(1);
 	listInsert(&ptr, 5);
 	listInsert(&ptr, 9);
-	listInsert(&ptr, 14);
 	listInsert(&ptr, 2);
 	node* elem = &head;
 	node* elem1 = elem->next;
 	node* elem2 = elem1->next;
 	node* elem3 = elem2->next;
-	node* elem4 = elem3->next;
+	EXPECT_TRUE(ptr->down);
 	EXPECT_EQ(elem1->value, 2);
 	EXPECT_EQ(elem2->value, 5);
 	EXPECT_EQ(elem3->value, 9);
-	EXPECT_EQ(elem4->value, 14);
 	free(elem1);
 	free(elem2);
 	free(elem3);
-	free(elem4);
+	free(ptr->head->next->next->next);
+	free(ptr->head->next->next);
+	free(ptr->head->next);
+	free(ptr);
 }
 
 TEST(PuttingElementInList, listInsert_AddingExistingElements1_ExpectEquel) {
 	node tail{ INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
 	list myList = { &head, &tail };
+	srand(1);
 	list* ptr = &myList;
 	listInsert(&ptr, 7);
 	listInsert(&ptr, 3);
 	listInsert(&ptr, 7);
 	node* elem = &head;
-	EXPECT_EQ(elem->next->value, 3);
-	elem = elem->next;
-	EXPECT_EQ(elem->next->value, 7);
-	elem = elem->next;
-	EXPECT_EQ(elem->next->value, INFINITY);
+	node* elem1 = elem->next;
+	node* elem2 = elem1->next;
+	node* elem3 = elem2->next;
+	EXPECT_EQ(elem1->value, 3);
+	EXPECT_EQ(elem2->value, 7);
+	EXPECT_EQ(elem3->value, INFINITY);
+	free(ptr->head->next->next);
+	free(ptr->head->next);
+	free(elem1);
+	free(elem2);
 }
 
 TEST(DeleteElementByNode, deleteEl_DeleteExistingElementList_ExpectEquel) {
