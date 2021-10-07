@@ -15,7 +15,7 @@ TEST(ListCreation, createList_CreateNewList_ExpectTrue) {
 }
 
 TEST(SearchElementByfirstNode, search_SearchExistingElementInOneLevel_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node third = { 4, &tail, NULL };
 	node second = { 2, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
@@ -24,7 +24,7 @@ TEST(SearchElementByfirstNode, search_SearchExistingElementInOneLevel_ExpectTrue
 }
 
 TEST(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node third = { 4, &tail, NULL };
 	node second = { 2, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
@@ -33,7 +33,7 @@ TEST(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_ExpectT
 }
 
 TEST(SearchElementInList, searchElement_SearchExistingElementInOneLevel_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node third = { 5, &tail, NULL };
 	node second = { 3, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
@@ -42,7 +42,7 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInOneLevel_ExpectTr
 }
 
 TEST(SearchElementInList, searchElement_SearchNotExistingElementInOneLevel_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node third = { 5, &tail, NULL };
 	node second = { 3, &third, NULL };
 	node head = { (-1) * INFINITY, &second, NULL };
@@ -51,14 +51,14 @@ TEST(SearchElementInList, searchElement_SearchNotExistingElementInOneLevel_Expec
 }
 
 TEST(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node third = { 5, &fourth, NULL };
 	node second = { 3, &third, NULL };
 	node first = { -5, &second, NULL };
 	node head = { (-1) * INFINITY, &first, NULL };
 
-	node tail2{ INFINITY, NULL, NULL };
+	node tail2 = { INFINITY, NULL, NULL };
 	node fourth2 = { 13, &tail2, &fourth };
 	node third2 = { 5, &tail, &third };
 	node second2 = { 3, &third, &second };
@@ -71,14 +71,14 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_Exp
 }
 
 TEST(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node third = { 5, &fourth, NULL };
 	node second = { 3, &third, NULL };
 	node first = { -5, &second, NULL };
 	node head = { (-1) * INFINITY, &first, NULL };
 
-	node tail2{ INFINITY, NULL, NULL };
+	node tail2 = { INFINITY, NULL, NULL };
 	node third2 = { 5, &tail2, &third };
 	node first2 = { -5, &third2, &first };
 	node head2 = { (-1) * INFINITY, &first2, NULL };
@@ -89,7 +89,7 @@ TEST(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_
 }
 
 TEST(SearchElementInList, searchElement_SearchExistingElementInThreeNotFullLevels_ExpectTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node third = { 5, &fourth, NULL };
 	node second = { 3, &third, NULL };
@@ -122,7 +122,7 @@ TEST(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel) {
 }
 
 TEST(PuttingElementByFirstNode, insert_AddingElementInThreeLevelList_ExpectEquel) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node third = { 5, &fourth, NULL };
 	node second = { 3, &third, NULL };
@@ -186,7 +186,7 @@ TEST(PuttinfElementInList, listInsert_AddingElementsCheckOrder_ExpectEquel) {
 }
 
 TEST(PuttingElementInList, listInsert_AddingExistingElements1_ExpectEquel) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node head = { (-1) * INFINITY, &tail, NULL };
 	list myList = { &head, &tail };
 	srand(1);
@@ -208,7 +208,7 @@ TEST(PuttingElementInList, listInsert_AddingExistingElements1_ExpectEquel) {
 }
 
 TEST(DeleteElementByNode, deleteEl_DeleteExistingElementList_ExpectEquel) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node* first = (node*)malloc(sizeof(node));
 	ASSERT_NE(first, nullptr);
 	first->next = &tail;
@@ -222,7 +222,7 @@ TEST(DeleteElementByNode, deleteEl_DeleteExistingElementList_ExpectEquel) {
 }
 
 TEST(DeleteElementInList, deleteElement_DeleteExistingElementInTwoLevelList_ExpectEquel) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node* third = (node*)malloc(sizeof(node));
 	ASSERT_NE(third, nullptr);
@@ -233,7 +233,7 @@ TEST(DeleteElementInList, deleteElement_DeleteExistingElementInTwoLevelList_Expe
 	node first = { -5, &second, NULL };
 	node head = { (-1) * INFINITY, &first, NULL };
 
-	node tail2{ INFINITY, NULL, &tail };
+	node tail2 = { INFINITY, NULL, &tail };
 	node* third2 = (node*)malloc(sizeof(node));
 	ASSERT_NE(third2, nullptr);
 	third2->next = &tail2;
@@ -250,7 +250,7 @@ TEST(DeleteElementInList, deleteElement_DeleteExistingElementInTwoLevelList_Expe
 }
 
 TEST(DeleteElementInList, deleteElement_DeleteElementCheckUpperLevelDelete_ExpectEquelTrue) {
-	node tail{ INFINITY, NULL, NULL };
+	node tail = { INFINITY, NULL, NULL };
 	node fourth = { 13, &tail, NULL };
 	node* third = (node*)malloc(sizeof(node));
 	ASSERT_NE(third, nullptr);
