@@ -54,7 +54,7 @@ TEST_F(SearchElementByfirstNode, search_SearchExistingElementInOneLevel_ExpectTr
 	EXPECT_EQ(toFind->value, 2);
 }
 
-TEST_F(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_ExpectTrue) {
+TEST_F(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_ExpectFalse) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node third = { 4, &tail, nullptr };
 	node second = { 2, &third, nullptr };
@@ -64,27 +64,27 @@ TEST_F(SearchElementByfirstNode, search_SearchNotExistingElementInOneLevel_Expec
 	EXPECT_FALSE(toFind);
 }
 
-TEST_F(SearchElementInList, searchElement_SearchExistingElementInOneLevel_ExpectTrue) {
+TEST_F(SearchElementInList, searchElement_SearchExistingElementInOneLevel_ExpectEquel_1) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node third = { 5, &tail, nullptr };
 	node second = { 3, &third, nullptr };
 	node head = { (-1) * INFINITY, &second, nullptr };
-	list myList = { &head, &tail };
+	list myList = { &head, &tail, nullptr };
 	int boolean = searchElement(&myList, 3);
 	EXPECT_EQ(boolean, 1);
 }
 
-TEST_F(SearchElementInList, searchElement_SearchNotExistingElementInOneLevel_ExpectTrue) {
+TEST_F(SearchElementInList, searchElement_SearchNotExistingElementInOneLevel_ExpectEquel_0) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node third = { 5, &tail, nullptr };
 	node second = { 3, &third, nullptr };
 	node head = { (-1) * INFINITY, &second, nullptr };
-	list myList = { &head, &tail };
+	list myList = { &head, &tail, nullptr };
 	int boolean = searchElement(&myList, 2);
 	EXPECT_EQ(boolean, 0);
 }
 
-TEST_F(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_ExpectTrue) {
+TEST_F(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_ExpectEquel_1) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node fourth = { 13, &tail, nullptr };
 	node third = { 5, &fourth, nullptr };
@@ -105,12 +105,12 @@ TEST_F(SearchElementInList, searchElement_SearchExistingElementInTwoFullLevels_E
 	EXPECT_EQ(boolean, 1);
 }
 
-TEST_F(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_ExpectTrue) {
+TEST_F(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevels_ExpectEquel_1) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node fourth = { 13, &tail, nullptr };
 	node third = { 5, &fourth, nullptr };
 	node second = { 3, &third, nullptr };
-	node first = { -5, &second, nullptr };
+	node first = { -5, &second,   nullptr };
 	node head = { (-1) * INFINITY, &first, nullptr };
 
 	node tail2 = { INFINITY, nullptr, nullptr };
@@ -124,7 +124,7 @@ TEST_F(SearchElementInList, searchElement_SearchExistingElementInTwoNotFullLevel
 	EXPECT_EQ(boolean, 1);
 }
 
-TEST_F(SearchElementInList, searchElement_SearchExistingElementInThreeNotFullLevels_ExpectTrue) {
+TEST_F(SearchElementInList, searchElement_SearchExistingElementInThreeNotFullLevels_ExpectEquel_1) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node fourth = { 13, &tail, nullptr };
 	node third = { 5, &fourth, nullptr };
@@ -145,14 +145,14 @@ TEST_F(SearchElementInList, searchElement_SearchExistingElementInThreeNotFullLev
 	list myList2 = { &head, &tail, &myList };
 	list myList3 = { &head, &tail, &myList2 };
 	int boolean = searchElement(&myList3, 13);
-	EXPECT_TRUE(boolean, 1);
+	EXPECT_EQ(boolean, 1);
 }
 
-TEST_F(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel) {
+TEST_F(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel_3) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node first = { -1, &tail, nullptr };
 	node head = { (-1) * INFINITY, &first, nullptr };
-	list myList = { &head, &tail };
+	list myList = { &head, &tail, nullptr };
 	node* ptrList = (&myList)->head;
 	srand(1);
 	node* toInsert = insert(&head, 3);
@@ -162,7 +162,7 @@ TEST_F(PuttingElementByFirstNode, insert_AddingElementInList_ExpectEquel) {
 }
 
 
-TEST_F(PuttingElementByFirstNode, insert_AddingElementInThreeLevelList_ExpectEquel) {
+TEST_F(PuttingElementByFirstNode, insert_AddingElementInThreeLevelList_ExpectEquel_1) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node fourth = { 13, &tail, nullptr };
 	node third = { 5, &fourth, nullptr };
@@ -189,7 +189,7 @@ TEST_F(PuttingElementByFirstNode, insert_AddingElementInThreeLevelList_ExpectEqu
 
 }
 
-TEST_F(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel) {
+TEST_F(PuttingElementInList, listInsert_AddingElementInEmptyList_ExpectEquel_5) {
 	node tail = { INFINITY, nullptr, nullptr };
 	node head = { (-1) * INFINITY, &tail, nullptr };
 	list myList = { &head, &tail, nullptr };

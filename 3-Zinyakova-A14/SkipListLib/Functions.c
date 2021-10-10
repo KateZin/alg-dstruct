@@ -51,7 +51,6 @@ node* search(node* elem, int key) {
 	else {
 		search(elem, key);
 	}
-
 }
 
 // если возвращает 1 - элемент найден, 0 - не найден
@@ -129,7 +128,6 @@ void deleteEl(node* elem, int key) {
 	else {
 		deleteEl(elem, key);
 	}
-
 }
 
 void deleteElement(list** ptrList, int key) {
