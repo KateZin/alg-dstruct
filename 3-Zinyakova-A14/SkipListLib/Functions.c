@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include"Header.h"
 #include<math.h>
+#include<stdlib.h>
 #pragma warning(disable:4996)
 
 node* _buildNode(float key, node* downNode, node* nextNode) {
@@ -35,13 +36,13 @@ list* createList() {
 }
 
 node* search(node* elem, int key) {
-	while (elem->next->value < key) {
+	while (elem->next->value < (float)key) {
 		elem = elem->next;
 	}
-	if (elem->next->value == key) {
+	if (elem->next->value == (float)key) {
 		return elem->next;
 	}
-	else if (elem->next->value > key) {
+	else if (elem->next->value > (float) key) {
 		elem = elem->down;
 	}
 	if (elem == NULL) {
@@ -50,6 +51,7 @@ node* search(node* elem, int key) {
 	else {
 		search(elem, key);
 	}
+
 }
 
 // если возвращает 1 - элемент найден, 0 - не найден
@@ -72,7 +74,7 @@ node* insert(node* elem, int key) {
 		printf("element is already existed");
 		return NULL;
 	}
-	while (elem->next != NULL && elem->next->value < key) {
+	while (elem->next != NULL && elem->next->value < (float)key) {
 		elem = elem->next;
 	}
 	node* downNode;
@@ -109,16 +111,16 @@ void listInsert(list** ptrList, int key) {
 }
 
 void deleteEl(node* elem, int key) {
-	while (elem->next->value < key) {
+	while (elem->next->value < (float)key) {
 		elem = elem->next;
 	}
-	if (elem->next->value == key) {
+	if (elem->next->value == (float)key) {
 		node* toDel = elem->next;
 		elem->next = elem->next->next;
 		elem = elem->down;
 		free(toDel);
 	}
-	else if (elem->next->value > key) {
+	else if (elem->next->value > (float)key) {
 		elem = elem->down;
 	}
 	if (elem == NULL) {
@@ -153,7 +155,7 @@ void deleteElement(list** ptrList, int key) {
 
 void deleteList(list* myList) {
 	while (myList->head->next != myList->tail) {
-		deleteElement(&myList, myList->head->next->value);
+		deleteElement(&myList, (int)myList->head->next->value);
 	}
 	free(myList->head);
 	free(myList->tail);
