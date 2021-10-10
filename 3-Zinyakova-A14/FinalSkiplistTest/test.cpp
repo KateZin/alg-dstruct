@@ -307,8 +307,8 @@ TEST_F(DeleteElementInList, deleteElement_DeleteElementCheckUpperLevelDelete_Exp
 	third->next = &fourth;
 	third->down = nullptr;
 	third->value = 5;
-	node second = { 3, third, nullptr};
-	node first = { -5, &second, nullptr};
+	node second = { 3, third, nullptr };
+	node first = { -5, &second, nullptr };
 	node head = { (-1) * INFINITY, &first, nullptr };
 	node* tail2 = (node*)malloc(sizeof(node));
 	ASSERT_NE(tail2, nullptr);
