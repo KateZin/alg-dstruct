@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include"Header.h"
-#include<math.h>
-#include<stdlib.h>
-#pragma warning(disable:4996)
+#include "Header.h"
+#include <math.h>
+#include <stdlib.h>
+#pragma warning (disable:4996)
 
 node* _buildNode(float key, node* downNode, node* nextNode) {
 	node* newnode = (node*)malloc(sizeof(node));
