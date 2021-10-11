@@ -28,6 +28,10 @@ list* createList() {
 	}
 	node* head = _buildNode((-1) * INFINITY, NULL, NULL);
 	node* tail = _buildNode(INFINITY, NULL, NULL);
+	if (head == NULL || tail == NULL) {
+		printf("\n The list cannot be created\n");
+		return NULL;
+	}
 	newList->head = head;
 	newList->tail = tail;
 	newList->down = NULL;
@@ -85,6 +89,10 @@ node* insert(node* elem, int key) {
 	}
 	if (downNode != NULL || elem->down == NULL) {
 		elem->next = buildNode(key, downNode, elem->next);
+		if (elem->next == NULL) {
+			printf("\nThe node hasn't been created");
+			return NULL;
+		}
 		if (coin() == 1) {
 			return elem->next;
 		}
@@ -101,7 +109,15 @@ void listInsert(list** ptrList, int key) {
 	node* newnode = insert(myList->head, key);
 	if (newnode != NULL) {
 		list* newList = createList();
+		if (newList == NULL) {
+			printf("\nNew level hasn't been created\n");
+			return NULL;
+		}
 		node* addnode = buildNode(key, newnode, newList->tail);
+		if (addnode == NULL) {
+			printf("\nNew node hasn't been created\n");
+			return NULL;
+		}
 		newList->head->next = addnode;
 		newList->head->down = myList->head;
 		newList->down = myList;
