@@ -122,6 +122,8 @@ void listInsert(list** ptrList, int key) {
 		node* addnode = buildNode(key, newnode, newList->tail);
 		if (addnode == NULL) {
 			printf("\nNew node hasn't been created\n");
+			free(newList->head);
+			free(newList->tail);
 			free(newList);
 			return;
 		}
