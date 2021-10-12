@@ -94,7 +94,6 @@ node* insert(node* elem, int key) {
 		node* newNext = buildNode(key, downNode, elem->next);
 		if (newNext == NULL) {
 			printf("\nThe node hasn't been created");
-			//free(newNext);
 			return NULL;
 		}
 		else {
