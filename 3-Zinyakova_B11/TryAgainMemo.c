@@ -157,20 +157,24 @@ void memfree(void* p) {
 	*isFree(start) = TRUE;
 	uint32_t* next;
 	uint32_t* prev;
+	uint32_t* checkSize = &myList.size;
+
 
 	uint32_t freeSize = *BlockSizeHead(start); // размер памяти которая была у юзера и которую будем освобождать
 	// флаги занятости блоков слева и справва
 	char flagLeft = 0;
 	char flagRight = 0;
 
-	if (start != FIRST) {
+	//if (start != FIRST) {  
+	if ((uint32_t*)((char*)start - sizeof(uint32_t)) >= (uint32_t*)FIRST){    //!!!!!! сравнение указателей
 		uint32_t sizePrev = *PrevSize(start);
 		prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
 		if (*isFree(prev) == TRUE) {
 			flagLeft = 1;  // можем мержить блок слева
 		}
 	}
-	if ((uint32_t*)((char*)start + DESC_SIZE + freeSize) < (uint32_t*)((char*)FIRST + SIZE)) { // если это не крайний блок справа 
+	//if ((uint32_t*)((char*)start + DESC_SIZE + freeSize) < (uint32_t*)((char*)FIRST + SIZE)) { // если это не крайний блок справа 
+	if((uint32_t*)((char*)start + *start + DESC_SIZE) <= (uint32_t*)((char*)FIRST + SIZE)){     // !!!! сравнение указателей
 		uint32_t* tmp = (uint32_t*)((char*)start + DESC_SIZE + freeSize);
 		if (*isFree(tmp) == TRUE) {
 			flagRight = 1;
@@ -188,14 +192,15 @@ void memfree(void* p) {
 		*NextBlock(start) = NULL;
 		*PrevBlock(start) = elem;
 		*isFree(start) = TRUE;
-
-		myList.size = myList.size + *start;
+		myList.size = myList.size + *start + DESC_SIZE;   ///!!!! плюс размер деска
 	}
 
 	// элемент справа свободен. мержимся с ним и перестраиваем указатели и изменяем размер блока
 	if (flagLeft == 0 && flagRight == 1) {
 		// так мы должны попасть на начало сдежующего блока (если нет то еще попробовать + sizeof(uint32_t))
 		next = (uint32_t*)((char*)start + freeSize + DESC_SIZE);
+		// добавила
+		myList.size = myList.size + *start + DESC_SIZE;    /// !!!! ошибка (была)
 		//увеличиваем размер текущего блока на размер следующего + размер дескриптора
 		int newMemSize = freeSize + DESC_SIZE + *next;
 		// записываем в начало и конец блока
@@ -206,47 +211,77 @@ void memfree(void* p) {
 		if (*NextBlock(next) != NULL) {
 			uint32_t* nextNext = *NextBlock(*NextBlock(next));
 			*PrevBlock(nextNext) = start;
-
 		}
 		*PrevBlock(start) = *PrevBlock(next);
 		// если есть блок пред предыдущего, привязываем его некст к нашему блоку
 		if (*PrevBlock(next) != NULL) {
 			uint32_t* prevPrev = *PrevBlock(*PrevBlock(next));
 			*NextBlock(prevPrev) = start;
-
 		}
-		myList.size = myList.size + newMemSize;
+		if (next == myList.desc) {    //!!!! добавила
+			myList.desc = start;
+		}
 	}
 
 	// элемент слева свободен. мержимся с ним и изменяем размер блока
 	if (flagLeft == 1 && flagRight == 0) {
+		myList.size = myList.size + *start + DESC_SIZE;
 		uint32_t sizePrev = *PrevSize(start);
 		// находим начало левого блока
 		prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
 		int newMemSize = sizePrev + *start + DESC_SIZE;
 		// меняем размеры блоков
 		*BlockSizeHead(prev) = *BlockSizeEnd(prev, newMemSize) = newMemSize;
-		myList.size = myList.size + newMemSize;
 	}
 
 	// элементы слева и справа свободны. меняем размер. удаляем блок справа
 	if (flagLeft == 1 && flagRight == 1) {
+		myList.size = myList.size + *start + DESC_SIZE;
 		// так мы должны попасть на начало сдежующего блока (если нет то еще попробовать + sizeof(uint32_t))
 		next = (uint32_t*)((char*)start + freeSize + DESC_SIZE);
 		uint32_t sizePrev = *PrevSize(start);
 		// находим начало левого блока
 		prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
+
+		// если правый равен первому в списке
+		if (next == myList.desc) {
+			uint32_t* tmp = *PrevBlock(prev);
+			*NextBlock(tmp) = *NextBlock(prev);
+			// если предыдущий не последний в списке
+			if (*NextBlock(prev) != NULL) {
+				uint32_t* tmp2 = *NextBlock(prev);
+				*PrevBlock(tmp2) = *PrevBlock(prev);
+			}
+			*NextBlock(prev) = *NextBlock(next);
+			*PrevBlock(prev) = NULL;
+			myList.desc = prev;
+		}
+
+		//если левый равен первому в списке
+		else if (prev == myList.desc) {
+			uint32_t* tmp3 = *PrevBlock(next);
+			*NextBlock(tmp3) = *NextBlock(next);
+			// если правый последний
+			if (*NextBlock(next) == NULL) {
+				uint32_t* tmp4 = *NextBlock(next);
+				*PrevBlock(tmp4) = *PrevBlock(next);
+			}
+		}
+
+		//если они в середине
+		else if (prev != myList.desc && next!= myList.desc){
+			uint32_t* prevOfNext = *PrevBlock(next);
+			*NextBlock(prevOfNext) = *NextBlock(next);
+			if (*NextBlock(next) != NULL) {
+				uint32_t* nextOfNext = *NextBlock(next);
+				*PrevBlock(nextOfNext) = *PrevBlock(next);
+			}
+		}
+		
 		// меняем размер блокоа
 		int newMemSize = sizePrev + DESC_SIZE + *start + DESC_SIZE + *next;
 		*BlockSizeHead(prev) = *BlockSizeEnd(prev, newMemSize) = newMemSize;
-		// удаляем правый блок - перестраиваем указатели
-		*NextBlock(prev) = *NextBlock(next);
-		// и если есть блок следующий за следующим, то находим его и меняем ссылку для предыдущего блока на предыщий
-		if (*NextBlock(next) != NULL) {
-			uint32_t* nextNext = *NextBlock(*NextBlock(next));
-			*PrevBlock(nextNext) = prev;
-		}
-		myList.size = myList.size + newMemSize;
+	
 	}
 	if (myList.desc < FIRST || myList.desc >(uint32_t*)((char*)FIRST + SIZE)) {
 		printf("\nyou are in restricted zone");
@@ -274,9 +309,15 @@ int main() {
 	a1 = fp;
 //	//printf("%d\n", *(trial - 4));
 	uint32_t* trial2 = (uint32_t*)memalloc(20*sizeof(uint32_t*));
+	printf("%d\n", myList.size);
+	uint32_t* trial3 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
 	a1 = myList.desc;
+	printf("%d\n", myList.size);
 	//memdone();
 	memfree(trial2);
+	memfree(trial3);
+	//memfree(trial3);
+	printf("%d\n", myList.size);
 	memdone();
 //	printf("after 20 %d\n", myList.size);
 	//uint32_t* trial3 = (uint32_t*)memalloc(15*sizeof(uint32_t*));
