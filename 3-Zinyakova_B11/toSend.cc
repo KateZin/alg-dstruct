@@ -81,7 +81,9 @@ void memdone() {
 	if (bytes != SIZE) {
 		fprintf(stderr, "Memory leak was detected! You lost %i bytes\n", (int)SIZE - bytes);
 	}
-
+	if (myList.desc < FIRST || myList.desc >(uint32_t*)((char*)FIRST + SIZE)) {
+		printf("\nyou are in restricted zone memdone");
+	}
 }
 
 
@@ -89,18 +91,21 @@ void* memalloc(int size) {
 	if (size < 1 || size > myList.size - memgetblocksize()) {
 		return NULL;
 	}
+	char flag = 1;
 	uint32_t* start = myList.desc;// myList.desc - всегда начало списка, где храним размер блока
-	while (*start < (size + DESC_SIZE)) { // если размер блока меньше чем просят ищем другой блок.
-		if (*NextBlock(start) == NULL) {  //  если прошли все блоки и нужного блока нет возвращаем NULL
-			return NULL;
+	while (flag) {
+		if (*start >= size) {
+			flag = 0;
+			break;
 		}
-		start = *NextBlock(start); // берем следующий блок
+		start = *NextBlock(start);
 	}
-
+	if (flag)
+		return NULL;
 	// мы здесь если есть блок подходящего размера и мы смотрим на его начало
 
 	// проверяем хватит ли нам памяти блоак чтобы его разделить
-	if (*start - size - DESC_SIZE > DESC_SIZE) {
+	if (*start - size > DESC_SIZE) {
 
 		//1) делим блок
 		// 2) создадим пустой блок
@@ -139,6 +144,9 @@ void* memalloc(int size) {
 			*NextBlock(prevBlock) = nextBlock;
 		}
 		myList.size = myList.size - *start;
+	}
+	if (myList.desc < FIRST || myList.desc >(uint32_t*)((char*)FIRST + SIZE)) {
+		printf("\nyou are in restricted zone");
 	}
 	return (void*)((char*)start + DESC_SIZE - sizeof(uint32_t));
 
@@ -276,7 +284,10 @@ void memfree(void* p) {
 		// меняем размер блокоа
 		int newMemSize = sizePrev + DESC_SIZE + *start + DESC_SIZE + *next;
 		*BlockSizeHead(prev) = *BlockSizeEnd(prev, newMemSize) = newMemSize;
-		
+
+	}
+	if (myList.desc < FIRST || myList.desc >(uint32_t*)((char*)FIRST + SIZE)) {
+		printf("\nyou are in restricted zone");
 	}
 }
 
@@ -288,68 +299,3 @@ int memgetminimumsize() {
 int memgetblocksize() {
 	return DESC_SIZE;
 }
-
-//
-//int main() {
-//	int allSize = sizeof(uint32_t*) * 100;
-//	uint32_t* fp = (uint32_t*)malloc(allSize);
-//	meminit(fp, allSize);
-//	//memdone();
-//	//printf("после meminit %d\n", myList.size);
-//	testBlock* a1 = fp;
-//	//uint32_t* trial = (uint32_t*)memalloc(10*sizeof(uint32_t*));
-//	a1 = fp;
-//	//	//printf("%d\n", *(trial - 4));
-//	uint32_t* trial2 = (uint32_t*)memalloc(20 * sizeof(uint32_t*));
-//	printf("%d\n", myList.size);
-//	uint32_t* trial3 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
-//	a1 = myList.desc;
-//	printf("%d\n", myList.size);
-//	//memdone();
-//	memfree(trial2);
-//	memfree(trial3);
-//	//memfree(trial3);
-//	printf("%d\n", myList.size);
-//	memdone();
-	//	printf("after 20 %d\n", myList.size);
-		//uint32_t* trial3 = (uint32_t*)memalloc(15*sizeof(uint32_t*));
-	//	printf("after 15 %d\n", myList.size);
-		//uint32_t* trial4 = (uint32_t*)memalloc(25 * sizeof(uint32_t*)); 
-	//	printf("after 25 %d\n", myList.size);
-		//uint32_t* trial5 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
-	//	printf("afterl5 %d\n", myList.size);
-		//uint32_t* trial6 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
-		//memdone();
-	//	printf("afterl6 %d\n", myList.size);
-	//	if ( myList.desc < FIRST /*|| trial3 < fp || trial4 < fp || trial5 < fp || trial6 < fp*/) {
-	//		printf("eeeeeee");
-	//	}
-		//printf("\n%d", sizeof(uint32_t*));
-		//uint32_t* trial7 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
-		//uint32_t* trial8 = (uint32_t*)memalloc(50 * sizeof(uint32_t*));*/
-		//printf("%p, %p\n", trial, fp  );
-		//printf("%d\n",  trial - fp);
-		//printf("%d\n", trial2-trial);
-		//printf("%d", trial3-trial2);
-
-
-		//a1 = fp;
-		//testBlock* a2 = (testBlock*)((char*)trial2 -DESC_SIZE + sizeof(uint32_t));
-		//testBlock* a3 = (testBlock*)((char*)trial3 - DESC_SIZE + sizeof(uint32_t));
-		//memfree(trial3);
-		//memfree(trial);
-		//memfree(trial2);
-		//memfree(trial5);
-		//memfree(trial4);
-		//trial2 = (uint32_t*)memalloc(20 * sizeof(uint32_t*));
-		//trial3 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
-
-		//trial4 = (uint32_t*)memalloc(25 * sizeof(uint32_t*));
-		// trial5 = (uint32_t*)memalloc(15 * sizeof(uint32_t*));
-		//uint32_t* elem = myList.desc;
-		//printf("%p\n", fp);
-		//printf("%p , %p\n", *NextBlock(elem), *PrevBlock(elem));
-		//uint32_t* second = *NextBlock(elem);
-		//printf("%d", *BlockSizeHead(second));
-//}
-
