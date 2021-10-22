@@ -44,6 +44,8 @@ extern "C" {
 	// memdone();
 	// free(ptr);
 	int memgetblocksize();
+
+
 	uint32_t* BlockSizeHead(void* desc);
 	uint32_t* BlockSizeEnd(void* desc, int size);
 	uint32_t* PrevSize(void* desc);
