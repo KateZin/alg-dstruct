@@ -99,9 +99,13 @@ void* memalloc(int size) {
 			break;
 		}
 		start = *NextBlock(start);
+		if (start == NULL) {
+			return NULL;
+		}
 	}
-	if (flag)
+	/*if (flag) {
 		return NULL;
+	}*/
 	// мы здесь если есть блок подходящего размера и мы смотрим на его начало
 
 	// проверяем хватит ли нам памяти блоак чтобы его разделить
@@ -149,6 +153,8 @@ void* memalloc(int size) {
 		printf("\nyou are in restricted zone");
 	}
 	return (void*)((char*)start + DESC_SIZE - sizeof(uint32_t));
+
+
 
 }
 

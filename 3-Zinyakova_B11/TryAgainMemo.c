@@ -99,9 +99,13 @@ void* memalloc(int size) {
 			break;
 		}
 		start = *NextBlock(start);
+		if (start == NULL) {
+			return NULL;
+		}
 	}
-	if (flag)
+	/*if (flag) {
 		return NULL;
+	}*/
 	// мы здесь если есть блок подходящего размера и мы смотрим на его начало
 
 	// проверяем хватит ли нам памяти блоак чтобы его разделить
@@ -149,6 +153,8 @@ void* memalloc(int size) {
 		printf("\nyou are in restricted zone");
 	}
 	return (void*)((char*)start + DESC_SIZE - sizeof(uint32_t));
+
+
 
 }
 
@@ -301,14 +307,16 @@ int memgetblocksize() {
 }
 
 
-//int main() {
-//	void* p1 = 0, * p2 = 0, * p3 = 0;
-//	int memsize = memgetminimumsize() + 2 * memgetblocksize() + 3;
-//	void* ptr = malloc(memsize);
-//	meminit(ptr, memsize);
-//	p1 = memalloc(1); // Success!
-//	p2 = memalloc(1); // Success!
-//	p3 = memalloc(1); // Success!
+
+int main() {
+	void* p1 = 0, * p2 = 0, * p3 = 0, *p4 = 0;
+	int memsize = memgetminimumsize() + 2 * memgetblocksize() + 3;
+	void* ptr = malloc(memsize);
+	meminit(ptr, memsize);
+	p1 = memalloc(1); // Success!
+	p2 = memalloc(1); // Success!
+	p3 = memalloc(1); // Success!
+	p4 = memalloc(1); // Success!
 	//	printf("after 20 %d\n", myList.size);
 		//uint32_t* trial3 = (uint32_t*)memalloc(15*sizeof(uint32_t*));
 	//	printf("after 15 %d\n", myList.size);
@@ -349,5 +357,5 @@ int memgetblocksize() {
 		//printf("%p , %p\n", *NextBlock(elem), *PrevBlock(elem));
 		//uint32_t* second = *NextBlock(elem);
 		//printf("%d", *BlockSizeHead(second));
-//}
+}
 
