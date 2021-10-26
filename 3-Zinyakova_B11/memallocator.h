@@ -30,7 +30,6 @@ extern "C" {
 	// free(ptr);
 	int memgetminimumsize();
 
-
 	// Returns size in bytes of additional information per allocation
 	// use case:
 	// void *p1 = 0, *p2 = 0;
@@ -45,13 +44,12 @@ extern "C" {
 	// free(ptr);
 	int memgetblocksize();
 
-
 	uint32_t* BlockSizeHead(void* desc);
 	uint32_t* BlockSizeEnd(void* desc, int size);
 	uint32_t* PrevSize(void* desc);
 	uint32_t** NextBlock(void* desc);
 	uint32_t** PrevBlock(void* desc);
-	uint32_t* isFree(void* desc);
+	uint32_t* IsFree(void* desc);
 
 #ifdef __cplusplus
 }
