@@ -134,7 +134,6 @@ void* memalloc(int size) {
 			*PrevBlock(nextBlock) = prevBlock;
 		}
 	}
-
 	*isFree(start) = FALSE;
 	*NextBlock(start) = NULL;
 	*PrevBlock(start) = NULL;
@@ -162,7 +161,7 @@ void memfree(void* p) {
 		*left = *left + *start;
 		*BlockSizeEnd(left, *left) = *left;
 		start = left;
-		flagLeft == 1;
+		flagLeft = 1;
 	}
 	if (right != NULL && *isFree(right) == TRUE) {
 		flagRight = 1;
