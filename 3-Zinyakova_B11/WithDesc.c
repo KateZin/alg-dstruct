@@ -21,14 +21,12 @@ uint32_t SIZE;
 list_t myList;
 
 
-
-
 uint32_t* BlockSizeHead(void* desc) {
 	return (uint32_t*)desc;
 }
 
 uint32_t* BlockSizeEnd(void* desc, int size) {
-	return ((uint32_t*)((char*)desc + size - sizeof(uint32_t)));
+	return ((uint32_t*)((char*)desc + DESC_SIZE + size - sizeof(uint32_t)));
 }
 
 uint32_t* PrevSize(void* desc) {                           ///////////////???????
@@ -49,6 +47,7 @@ uint32_t* isFree(void* desc) {
 }
 
 
+
 int meminit(void* pMemory, int size) {
 	if (size <= memgetminimumsize()) {
 		return 0;
@@ -65,19 +64,19 @@ int meminit(void* pMemory, int size) {
 }
 
 
-//void memdone() {
-//	uint32_t* head = myList.desc;
-//	int bytes = 0;
-//	while (head != NULL) {
-//		bytes = bytes + (*head + DESC_SIZE);
-//		head = *NextBlock(head);
-//	}
-//
-//	if (bytes != SIZE) {
-//		fprintf(stderr, "Memory leak was detected! You lost %i bytes\n", (int)SIZE - bytes);
-//	}
-//}
-//
+void memdone() {
+	uint32_t* head = myList.desc;
+	int bytes = 0;
+	while (head != NULL) {
+		bytes = bytes + (*head + DESC_SIZE);
+		head = *NextBlock(head);
+	}
+
+	if (bytes != SIZE) {
+		fprintf(stderr, "Memory leak was detected! You lost %i bytes\n", (int)SIZE - bytes);
+	}
+}
+
 
 void* memalloc(int size) {
 	if (size < 1 || size > myList.size - memgetblocksize()) {
@@ -115,7 +114,7 @@ void* memalloc(int size) {
 		*start = size + DESC_SIZE;
 		*BlockSizeHead(start) = *BlockSizeEnd(start, *start) = *start;
 	}
-
+	
 	else {
 		uint32_t* nextBlock = *NextBlock(start);
 		uint32_t* prevBlock = *PrevBlock(start);
@@ -135,8 +134,8 @@ void* memalloc(int size) {
 		}
 	}
 
-	*isFree(start) = FALSE;
-	*NextBlock(start) = NULL;
+	*isFree(start) = FALSE; 
+	*NextBlock(start) = NULL; 
 	*PrevBlock(start) = NULL;
 	return (void*)((char*)start + DESC_SIZE - sizeof(uint32_t));
 }
@@ -191,7 +190,7 @@ void memfree(void* p) {
 		}
 		*PrevBlock(start) = NULL;
 		myList.desc = start;
-
+	
 	}
 }
 
