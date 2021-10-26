@@ -164,28 +164,25 @@ void memfree(void* p) {
 	uint32_t* start = (uint32_t*)((char*)p - DESC_SIZE + sizeof(uint32_t));
 	// отмечаем его свободным
 	*isFree(start) = TRUE;
-	uint32_t* next;
-	uint32_t* prev;
+	uint32_t freeSize = *BlockSizeHead(start);
+	uint32_t sizePrev = *PrevSize(start);
+	uint32_t* next = (uint32_t*)((char*)start + DESC_SIZE + freeSize);
+	uint32_t* prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
 	uint32_t* checkSize = &myList.size;
-
-
-	uint32_t freeSize = *BlockSizeHead(start); // размер памяти которая была у юзера и которую будем освобождать
+	 // размер памяти которая была у юзера и которую будем освобождать
 	// флаги занятости блоков слева и справва
 	char flagLeft = 0;
 	char flagRight = 0;
 
 	//if (start != FIRST) {  
 	if ((uint32_t*)((char*)start - sizeof(uint32_t)) >= (uint32_t*)FIRST) {    //!!!!!! сравнение указателей
-		uint32_t sizePrev = *PrevSize(start);
-		prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
 		if (*isFree(prev) == TRUE) {
 			flagLeft = 1;  // можем мержить блок слева
 		}
 	}
 	//if ((uint32_t*)((char*)start + DESC_SIZE + freeSize) < (uint32_t*)((char*)FIRST + SIZE)) { // если это не крайний блок справа 
 	if ((uint32_t*)((char*)start + *start + DESC_SIZE) <= (uint32_t*)((char*)FIRST + SIZE)) {     // !!!! сравнение указателей
-		uint32_t* tmp = (uint32_t*)((char*)start + DESC_SIZE + freeSize);
-		if (*isFree(tmp) == TRUE) {
+		if (*isFree(next) == TRUE) {
 			flagRight = 1;
 		}
 	}
@@ -207,7 +204,7 @@ void memfree(void* p) {
 	// элемент справа свободен. мержимся с ним и перестраиваем указатели и изменяем размер блока
 	if (flagLeft == 0 && flagRight == 1) {
 		// так мы должны попасть на начало сдежующего блока (если нет то еще попробовать + sizeof(uint32_t))
-		next = (uint32_t*)((char*)start + freeSize + DESC_SIZE);
+		//next = (uint32_t*)((char*)start + freeSize + DESC_SIZE);
 		// добавила
 		myList.size = myList.size + *start + DESC_SIZE;    /// !!!! ошибка (была)
 		//увеличиваем размер текущего блока на размер следующего + размер дескриптора
@@ -237,7 +234,7 @@ void memfree(void* p) {
 		myList.size = myList.size + *start + DESC_SIZE;
 		uint32_t sizePrev = *PrevSize(start);
 		// находим начало левого блока
-		prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
+		//prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
 		int newMemSize = sizePrev + *start + DESC_SIZE;
 		// меняем размеры блоков
 		*BlockSizeHead(prev) = *BlockSizeEnd(prev, newMemSize) = newMemSize;
@@ -247,10 +244,10 @@ void memfree(void* p) {
 	if (flagLeft == 1 && flagRight == 1) {
 		myList.size = myList.size + *start + DESC_SIZE;
 		// так мы должны попасть на начало сдежующего блока (если нет то еще попробовать + sizeof(uint32_t))
-		next = (uint32_t*)((char*)start + freeSize + DESC_SIZE);
+		//next = (uint32_t*)((char*)start + freeSize + DESC_SIZE);
 		uint32_t sizePrev = *PrevSize(start);
 		// находим начало левого блока
-		prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
+		//prev = (uint32_t*)((char*)start - sizePrev - DESC_SIZE);
 
 		// если правый равен первому в списке
 		if (next == myList.desc) {
