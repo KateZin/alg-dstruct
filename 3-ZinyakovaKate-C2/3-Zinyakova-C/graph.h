@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-
 #define EMPTY_STACK -1
 #define EMPTY_LIST -1
 #define MAX_LENGTH 20
