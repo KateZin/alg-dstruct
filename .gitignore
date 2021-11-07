@@ -27,3 +27,5 @@
 3-ZinyakovaKate-C2/packages/Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3/build/native/include/gtest/gtest.h
 3-ZinyakovaKate-C2/Test/pch.cpp
 3-ZinyakovaKate-C2/Test/pch.h
+3-ZinyakovaKate-C2/TestGraph/pch.h
+3-ZinyakovaKate-C2/TestGraph/pch.cpp
