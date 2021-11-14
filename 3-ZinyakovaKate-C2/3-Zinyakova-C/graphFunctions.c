@@ -55,7 +55,7 @@ void Destroy(Stack* stack) {
 	while (tmp != NULL) {
 		Node* ToFree = tmp;
 		tmp = tmp->next;
-		free(tmp);
+		free(ToFree);
 	}
 	free(stack);
 }
@@ -66,10 +66,9 @@ int Peek(Stack* stack) {
 
 void PrintStack(Stack* myStack) {
 	Node* a = myStack->top;
-	while (IsEmpty(myStack) == FALSE) {
-		a = myStack->top;
+	while (a != NULL) {
 		printf("%d\n", a->val);
-		Pop(myStack);
+		a = a->next;
 	}
 }
 
@@ -81,7 +80,7 @@ int** CreateMatrix(int n) {
 	for (int i = 0; i < n; i++) {
 		matrix[i] = (int*)malloc(sizeof(int) * n);
 		if (matrix[i] == NULL) {
-			for (int j = 0; j < i; j++) {
+			for (int j = 0; j <= i; j++) {
 				free(matrix[j]);
 			}
 			free(matrix);
@@ -129,7 +128,10 @@ void DFS(FILE* stream, int** matrix, int n) {
 		return;
 	}
 	int start = 0;
-	Push(myStack, start);
+	myStack = Push(myStack, start);
+	if (myStack == NULL) {
+		return;
+	}
 	for (int i = 0; i < n; i++) {
 		visited[i] = 0;
 	}
@@ -150,7 +152,10 @@ void DFS(FILE* stream, int** matrix, int n) {
 		else {
 			visited[v] = 1;
 			fprintf(stream, "%d ", v);
-			Push(myStack, v);
+			myStack = Push(myStack, v);
+			if (myStack == NULL) {
+				return;
+			}
 		}
 	}
 	Destroy(myStack);
