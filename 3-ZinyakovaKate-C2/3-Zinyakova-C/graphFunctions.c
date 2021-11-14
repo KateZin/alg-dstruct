@@ -130,6 +130,8 @@ void DFS(FILE* stream, int** matrix, int n) {
 	int start = 0;
 	myStack = Push(myStack, start);
 	if (myStack == NULL) {
+		free(visited);
+		Destroy(myStack);
 		return;
 	}
 	for (int i = 0; i < n; i++) {
@@ -154,6 +156,8 @@ void DFS(FILE* stream, int** matrix, int n) {
 			fprintf(stream, "%d ", v);
 			myStack = Push(myStack, v);
 			if (myStack == NULL) {
+				free(visited);
+				Destroy(myStack);
 				return;
 			}
 		}
