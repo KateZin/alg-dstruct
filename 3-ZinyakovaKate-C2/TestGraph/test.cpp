@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "graph.h"
+#include <crtdbg.h>
+#include <Windows.h>
 
 /*
 IDE: Visual Studio 2019 Community Edition
@@ -9,7 +11,9 @@ PC configuration:
 	Motherboard:    Hewlett-Packard 1670
 	RAM:            8.00 GB
 	HDD:            256 GB
-*/
+
+	Time: 2.263430 ms
+	Used memory: about 860 MB*/
 
 #define MAX_LENGTH 100
 const int count = 15000;
@@ -42,6 +46,7 @@ TEST(GraphStressTest, GraphMain) {
 	FILE* fstdout = fopen("C:/Users/z.kate/Desktop/write.txt", "w");
 	if (fstdout == NULL) {
 		printf("Error in file");
+		free(countBuf);
 		fclose(fstdin);
 		ASSERT_TRUE(fstdout);
 	}
@@ -55,7 +60,7 @@ TEST(GraphStressTest, GraphMain) {
 	free(countBuf);
 	int** matrix = CreateMatrix(n);
 	if (matrix == NULL) {
-		printf("Error in malloc");
+		printf("Error in malloc 66\n\n");
 		fclose(fstdin);
 		fclose(fstdout);
 		ASSERT_TRUE(matrix);
