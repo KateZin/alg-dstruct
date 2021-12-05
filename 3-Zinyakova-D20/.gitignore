@@ -13,7 +13,6 @@ pch.h
 pch.cpp
 3-Zinyakova-A14/FinalSkipListTest/Debug/FinalSkipListTest.exe.recipe
 *.vcxproj
-*.txt
 
 
 ## Ignore Visual Studio temporary files, build results, and
