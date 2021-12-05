@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_LENGTH 999
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,6 +21,7 @@ extern "C" {
 	void PrintMassConvert(int* mass, int size);
 	void PrintMass(int* mass, int size);
 	int* ReadMass(FILE* stream, int size);
+	int ReadData(char* filename, int* B, int* N, int** mass);
 	void DestroyMatrix(int** matrix, int str, int col);
 
 #ifdef __cplusplus

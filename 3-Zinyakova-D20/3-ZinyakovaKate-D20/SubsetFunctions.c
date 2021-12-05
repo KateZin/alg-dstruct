@@ -13,10 +13,45 @@ int* ReadMass(FILE* stream, int size) {
 		int check = fscanf(stream, "%d", &mass[i]);
 		if (check == 0) {
 			printf("error in reading from file");
+			free(mass);
 			return NULL;
 		}
 	}
 	return mass;
+}
+
+int ReadData(char* filename, int* B, int* N, int** mass) {
+	FILE* fstdin = fopen(filename, "r");
+	if (fstdin == NULL) {
+		printf("Error in file");
+		return -1;
+	}
+	int* countBuf = (int*)malloc(MAX_LENGTH * sizeof(int));
+	if (countBuf == NULL) {
+		printf("Error in malloc");
+		fclose(fstdin);
+		return -1;
+	}
+	char* check = fgets((char*)countBuf, MAX_LENGTH, fstdin);
+	if (check == NULL) {
+		fclose(fstdin);
+		free(countBuf);
+		return -1;
+	}
+	*B = atoi((char*)countBuf);
+	check = fgets((char*)countBuf, MAX_LENGTH, fstdin);
+	if (check == NULL) {
+		fclose(fstdin);
+		free(countBuf);
+		return -1;
+	}
+	*N = atoi((char*)countBuf);
+	free(countBuf);
+	*mass = ReadMass(fstdin, *N);
+	if (mass == NULL) {
+		return -1;
+	}
+	fclose(fstdin);
 }
 
 void PrintMass(int* mass, int size) {
@@ -111,12 +146,21 @@ int MassInFile(char* stream, int* mass, int size) {
 }
 
 int SubsetSum(int set[], int n, int sum, int** res) {
+	if (n > MAX_LENGTH) {
+		printf("input is not correct. too many elements\n");
+		return - 1;
+	}
 	int size = 0;
 	int** subset = CreateRectMatrix(n + 1, sum + 1);
 	if (subset == NULL) {
 		return -1;
 	}
 	for (int i = 0; i <= n; i++) {
+		if (set[i] < 0 && i!= n) {
+			printf("inpit is wrong. negative number\n");
+			DestroyMatrix(subset, n + 1, sum + 1);
+			return -1;
+		}
 		subset[i][0] = 1;
 	}
 	for (int i = 1; i <= sum; i++) {
@@ -134,12 +178,15 @@ int SubsetSum(int set[], int n, int sum, int** res) {
 	}
 	*res = (int*)malloc(sizeof(int));
 	if (*res == NULL) {
+		DestroyMatrix(subset, n+1, sum+1);
 		return -1;
 	}
 	int* tmp = *res;
 	if (subset[n][sum] == 1) {
 		size = findSet(subset, set, &tmp, n, sum);
 		if (size == -1) {
+			free(res);
+			DestroyMatrix(subset, n + 1, sum + 1);
 			return -1;
 		}
 		*res = tmp;
