@@ -24,8 +24,8 @@ TEST(StressTest, SubsetSum) {
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
 	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
 
-	char* input = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/StressTest/Data.txt";
-	char* name = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/StressTest/checkData.txt";
+	char* input = "test_data/StressTest/Data.txt";
+	char* output = "test_data/StressTest/checkData.txt";
 	FILE* fstdin = fopen(input, "w");
 	srand(time(NULL));
 	if (fstdin == NULL) {
@@ -48,51 +48,66 @@ TEST(StressTest, SubsetSum) {
 	fclose(fstdin);
 	free(countBuf);
 	// read file and run functions
+	//int* set = NULL;
+	//unsigned long int num;
+	//int amount, checkSum = 0;
+	//int check = ReadData(input, &num, &amount, &set);
+	//if (check == -1) {
+	//	printf("error in reading data");
+	//	ASSERT_TRUE(check);
+	//}
+	//int* res = NULL;
+	//int size = SubsetSum(set, amount, num, &res);
+	//if (size == -1) {
+	//	ASSERT_TRUE(size);
+	//}
+	//check = MassInFile(name, res, size);
+	//if (check == -1) {
+	//	ASSERT_TRUE(check);
+	//}
+	//free(res);
+	//free(set);
+	int toCheck = LabSolution(input, output);
+}
+
+TEST(FunctionalTest, CheckSizeOfSubSet) {
+	char* filename = "test_data/CheckSizeOfSubSet/input.txt";
+	char* name = "test_data/CheckSizeOfSubSet/output.txt";
 	int* set = NULL;
-	int B, N, checkSum = 0;
-	int check = ReadData(input, &B, &N, &set);
+	unsigned long int num;
+	int amount;
+	int check = ReadData(filename, &num, &amount, &set);
 	if (check == -1) {
 		printf("error in reading data");
 		ASSERT_TRUE(check);
 	}
+	EXPECT_EQ(amount, 5);
+	EXPECT_EQ(num, 10);
 	int* res = NULL;
-	int size = SubsetSum(set, N, B, &res);
+	int size = SubsetSum(set, amount, num, &res);
 	if (size == -1) {
 		ASSERT_TRUE(size);
 	}
-	check = MassInFile(name, res, size);
-	if (check == -1) {
-		ASSERT_TRUE(check);
-	}
-	free(res);
-	free(set);
-	fclose(fstdin);
-}
-
-TEST(FunctionalTest, CheckSizeOfSubSet) {
-	int subset[5] = { 2, 3, 4, 5, 9 };
-	int n = 5;
-	int sum = 10;
-	int* res = NULL;
-	int size = SubsetSum(subset, n, sum, &res);
 	EXPECT_EQ(size, 3);
+	free(set);
 	free(res);
 }
 
 TEST(FunctionalTest, noElements) {
-	char* filename = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/noElements/noElementsInput.txt";
-	char* name = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/noElements/noElementsOutput.txt";
+	char* filename = "test_data/noElements/noElementsInput.txt";
+	char* name = "test_data/noElements/noElementsOutput.txt";
 	int* set = NULL;
-	int B, N;
-	int check = ReadData(filename, &B, &N, &set);
+	unsigned long int num;
+	int amount;
+	int check = ReadData(filename, &num, &amount, &set);
 	if (check == -1) {
 		printf("error in reading data");
 		ASSERT_TRUE(check);
 	}
-	EXPECT_EQ(N, 0);
-	EXPECT_EQ(B, 10);
+	EXPECT_EQ(amount, 0);
+	EXPECT_EQ(num, 10);
 	int* res = NULL;
-	int size = SubsetSum(set, N, B, &res);
+	int size = SubsetSum(set, amount, num, &res);
 	if (size == -1) {
 		ASSERT_TRUE(size);
 	}
@@ -115,19 +130,20 @@ TEST(FunctionalTest, noElements) {
 
 TEST(FunctionalTest, TooManyElements) {
 	// there are no real set A in file as input is wrong (N>1000). Expect error
-	char* filename = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/TooManyElements/TooManyElements.txt";
-	char* name = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/TooManyElements/TooManyElements.txt";
+	char* filename = "test_data/TooManyElements/TooManyElements.txt";
+	char* name = "test_data/TooManyElements/TooManyElements.txt";
 	int* set = NULL;
-	int B, N;
-	int toCheck = ReadData(filename, &B, &N, &set);
+	unsigned long int num;
+	int amount;
+	int toCheck = ReadData(filename, &num, &amount, &set);
 	if (toCheck == -1) {
 		printf("error in reading data");
 		ASSERT_TRUE(toCheck);
 	}
-	EXPECT_EQ(N, 1001);
-	EXPECT_EQ(B, 10);
+	EXPECT_EQ(amount, 1001);
+	EXPECT_EQ(num, 10);
 	int* res = NULL;
-	int size = SubsetSum(set, N, B, &res);
+	int size = SubsetSum(set, amount, num, &res);
 	EXPECT_EQ(size, -1);
 	free(res);
 	free(set);
@@ -135,60 +151,71 @@ TEST(FunctionalTest, TooManyElements) {
 
 TEST(FunctionalTest, NegativeElement) {
 	// input is wrong as there is a negative number. Expect error
-	char* filename = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/NegativeElement/NegativeElement.txt";
+	char* filename = "test_data/NegativeElement/NegativeElement.txt";
 	int* set = NULL;
-	int B, N;
-	int toCheck = ReadData(filename, &B, &N, &set);
+	unsigned long int num;
+	int amount;
+	int toCheck = ReadData(filename, &num, &amount, &set);
 	if (toCheck == -1) {
 		printf("error in reading data");
 		ASSERT_TRUE(toCheck);
 	}
-	EXPECT_EQ(N, 5);
-	EXPECT_EQ(B, 10);
+	EXPECT_EQ(amount, 5);
+	EXPECT_EQ(num, 10);
 	int* res = NULL;
-	int size = SubsetSum(set, N, B, &res);
+	int size = SubsetSum(set, amount, num, &res);
 	EXPECT_EQ(size, -1);
 	free(res);
 	free(set);
 }
 
 TEST(FunctionalTest,ResultExistCheck) {
-	char* filename = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/ResultExistCheck/Input.txt";
-	char* output = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/ResultExistCheck/Output.txt";
+	char* filename = "test_data/ResultExistCheck/Input.txt";
+	char* output = "test_data/ResultExistCheck/Output.txt";
 	int* set = NULL;
-	int B, N, checkSum = 0;
-	int toCheck = ReadData(filename, &B, &N, &set);
+	unsigned long int num;
+	int amount, checkSum = 0;
+	int toCheck = ReadData(filename, &num, &amount, &set);
 	if (toCheck == -1) {
 		printf("error in reading data");
 		ASSERT_TRUE(toCheck);
 	}
-	EXPECT_EQ(N, 10);
-	EXPECT_EQ(B, 20);
+	EXPECT_EQ(amount, 10);
+	EXPECT_EQ(num, 20);
 	int* res = NULL;
-	int size = SubsetSum(set, N, B, &res);
+	int size = SubsetSum(set, amount, num, &res);
 	for (int i = 0; i < size; i++) {
 		checkSum += res[i];
 	}
-	EXPECT_EQ(checkSum, B);
+	EXPECT_EQ(checkSum, num);
+	FILE* fp = fopen(output, "r");
+	if (fp == NULL) {
+		printf("error in file");
+		ASSERT_TRUE(fp);
+	}
+	char str[100];
+	fgets(str, 100, fp);
+	EXPECT_EQ(strcmp(str, "5 1 8 2 4 "), 0);
 	free(res);
 	free(set);
+	fclose(fp);
 }
 
-
 TEST(FunctionalTest, ResultNotExistCheck) {
-	char* filename = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/ResultNotExistCheck/Input.txt";
-	char* output = "C:/Users/z.kate/Desktop/3 сем/структуры и алгосы/for git/alg-dstruct/3-Zinyakova-D20/Subset-Test-D20/test_data/ResultNotExistCheck/Output.txt";
+	char* filename = "test_data/ResultNotExistCheck/Input.txt";
+	char* output = "test_data/ResultNotExistCheck/Output.txt";
 	int* set = NULL;
-	int B, N, checkSum = 0;
-	int check = ReadData(filename, &B, &N, &set);
+	unsigned long int num;
+	int amount, checkSum = 0;
+	int check = ReadData(filename, &num, &amount, &set);
 	if (check == -1) {
 		printf("error in reading data");
 		ASSERT_TRUE(check);
 	}
-	EXPECT_EQ(N, 10);
-	EXPECT_EQ(B, 65);
+	EXPECT_EQ(amount, 10);
+	EXPECT_EQ(num, 65);
 	int* res = NULL;
-	int size = SubsetSum(set, N, B, &res);
+	int size = SubsetSum(set, amount, num, &res);
 	EXPECT_EQ(size, 1);
 	check = MassInFile(output, res, size);
 	if (check == -1) {
@@ -202,6 +229,41 @@ TEST(FunctionalTest, ResultNotExistCheck) {
 	char str[100];
 	fgets(str, 100, fp);
 	EXPECT_EQ(strcmp(str, "0 "), 0);
+	free(res);
+	free(set);
+}
+
+TEST(FunctionalTest, SumEquelsToOneOfTheElements) {
+	char* filename = "test_data/SumEquelsToOneOfTheElements/input.txt";
+	char* name = "test_data/SumEquelsToOneOfTheElements/output.txt";
+	int* set = NULL;
+	unsigned long int num;
+	int amount;
+	int check = ReadData(filename, &num, &amount, &set);
+	if (check == -1) {
+		printf("error in reading data");
+		ASSERT_TRUE(check);
+	}
+	EXPECT_EQ(amount, 5);
+	EXPECT_EQ(num, 10);
+	int* res = NULL;
+	int size = SubsetSum(set, amount, num, &res);
+	if (size == -1) {
+		ASSERT_TRUE(size);
+	}
+	EXPECT_EQ(size, 1);
+	check = MassInFile(name, res, size);
+	if (check == -1) {
+		ASSERT_TRUE(check);
+	}
+	FILE* fp = fopen(name, "r");
+	if (fp == NULL) {
+		printf("error in file");
+		ASSERT_TRUE(fp);
+	}
+	char str[100];
+	fgets(str, 100, fp);
+	EXPECT_EQ(strcmp(str, "10 "), 0);
 	free(res);
 	free(set);
 }
