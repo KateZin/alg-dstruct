@@ -120,10 +120,6 @@ int MassInFile(char* stream, int* mass, int size) {
 }
 
 int SubsetSum(int* set, int n, int sum, int** res) {
-	if (n > MAX_LENGTH) {
-		printf("input is not correct. too many elements\n");
-		return - 1;
-	}
 	int size = 0;
 	int** subset = CreateRectMatrix(n + 1, sum + 1);
 	if (subset == NULL) {
@@ -192,10 +188,12 @@ int LabSolution(char* input, char* output) {
 	int* res = NULL;
 	int size = SubsetSum(set, amount, num, &res);
 	if (size == -1) {
+		printf("error in SubsetSum function");
 		return -1;;
 	}
 	check = MassInFile(output, res, size);
 	if (check == -1) {
+		printf("error in filling data");
 		return -1;
 	}
 	free(res);
