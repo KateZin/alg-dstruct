@@ -14,12 +14,14 @@ int ReadData(char* filename, unsigned long int* sum, int* amount, int** mass) {
 	*mass = (int*)malloc(sizeof(int) * *amount);
 	if (mass == NULL) {
 		printf("error in malloc");
+		fclose(fstdin);
 		return -1;
 	}
 	for (int i = 0; i < *amount; i++) {
 		int check = fscanf(fstdin, "%d", (*mass)+i);
 		if (check == 0) {
 			printf("error in reading from file");
+			fclose(fstdin);
 			free(mass);
 			return NULL;
 		}
@@ -183,19 +185,23 @@ int LabSolution(char* input, char* output) {
 	int check = ReadData(input, &num, &amount, &set);
 	if (check == -1) {
 		printf("error in reading data");
-		return -1;;
+		return -1;
 	}
 	int* res = NULL;
 	int size = SubsetSum(set, amount, num, &res);
 	if (size == -1) {
+		free(set);
 		printf("error in SubsetSum function");
-		return -1;;
+		return -1;
 	}
 	check = MassInFile(output, res, size);
 	if (check == -1) {
+		free(set);
+		free(res);
 		printf("error in filling data");
 		return -1;
 	}
 	free(res);
 	free(set);
+	return 0;
 }
