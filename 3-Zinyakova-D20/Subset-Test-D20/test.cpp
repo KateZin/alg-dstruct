@@ -32,12 +32,6 @@ TEST(StressTest, SubsetSum) {
 		printf("Error in file");
 		ASSERT_TRUE(fstdin);
 	}
-	int* countBuf = (int*)malloc(MAX_LENGTH * sizeof(int));
-	if (countBuf == NULL) {
-		printf("Error in malloc");
-		fclose(fstdin);
-		ASSERT_TRUE(countBuf);
-	}
 	int sum = rand() % MAX_LENGTH;
 	// fill file 
 	fprintf(fstdin, "%d\n", sum);
@@ -46,16 +40,10 @@ TEST(StressTest, SubsetSum) {
 		fprintf(fstdin, "%d ", rand() % MAX_LENGTH);
 	}
 	fclose(fstdin);
-	free(countBuf);
 	// read file and run functions
-	LARGE_INTEGER freq, start, end;
-	QueryPerformanceFrequency(&freq);
-	QueryPerformanceCounter(&start);
 	int toCheck = LabSolution(input, output);
-	QueryPerformanceCounter(&end);
-	double time = (end.QuadPart - start.QuadPart) / (double)freq.QuadPart;
 	if (toCheck == -1) {
-		ASSERT_TRUE(toCheck);
+		ASSERT_TRUE(!toCheck);
 	}
 }
 
@@ -67,7 +55,7 @@ TEST(FunctionalTest, CheckWritingInFile) {
 	int check = ReadData(filename, &num, &amount, &set);
 	if (check == -1) {
 		printf("error in reading data");
-		ASSERT_TRUE(check);
+		ASSERT_TRUE(!check);
 	}
 	EXPECT_EQ(amount, 10);
 	EXPECT_EQ(num, 20);
@@ -83,15 +71,12 @@ TEST(FunctionalTest, CheckSizeOfSubSet) {
 	int check = ReadData(filename, &num, &amount, &set);
 	if (check == -1) {
 		printf("error in reading data");
-		ASSERT_TRUE(check);
+		ASSERT_TRUE(!check);
 	}
 	EXPECT_EQ(amount, 5);
 	EXPECT_EQ(num, 10);
 	int* res = NULL;
 	int size = SubsetSum(set, amount, num, &res);
-	if (size == -1) {
-		ASSERT_TRUE(size);
-	}
 	EXPECT_EQ(size, 3);
 	free(set);
 	free(res);
@@ -102,7 +87,7 @@ TEST(FunctionalTest, noElements) {
 	char* name = "test_data/noElements/noElementsOutput.txt";
 	int toCheck = LabSolution(filename, name);
 	if (toCheck == -1) {
-		ASSERT_TRUE(toCheck);
+		ASSERT_TRUE(!toCheck);
 	}
 	FILE* output = fopen(name, "r");
 	if (output == NULL) {
@@ -124,7 +109,7 @@ TEST(FunctionalTest, NegativeElement) {
 	int toCheck = ReadData(filename, &num, &amount, &set);
 	if (toCheck == -1) {
 		printf("error in reading data");
-		ASSERT_TRUE(toCheck);
+		ASSERT_TRUE(!toCheck);
 	}
 	EXPECT_EQ(amount, 5);
 	EXPECT_EQ(num, 10);
@@ -135,7 +120,7 @@ TEST(FunctionalTest, NegativeElement) {
 	free(set);
 }
 
-TEST(FunctionalTest,ResultExistCheck) {
+TEST(FunctionalTest, ResultExistCheck) {
 	char* filename = "test_data/ResultExistCheck/Input.txt";
 	char* output = "test_data/ResultExistCheck/Output.txt";
 	int toCheck = LabSolution(filename, output);
@@ -154,6 +139,9 @@ TEST(FunctionalTest, ResultIsCorrectCheck) {
 	char* filename = "test_data/ResultExistCheck/Input.txt";
 	char* output = "test_data/ResultExistCheck/Output.txt";
 	int toCheck = LabSolution(filename, output);
+	if (toCheck == -1) {
+		ASSERT_TRUE(!toCheck);
+	}
 	FILE* fp = fopen(output, "r");
 	if (fp == NULL) {
 		printf("error in file");
@@ -178,6 +166,9 @@ TEST(FunctionalTest, ResultNotExistCheck) {
 	char* input = "test_data/ResultNotExistCheck/Input.txt";
 	char* output = "test_data/ResultNotExistCheck/Output.txt";
 	int toCheck = LabSolution(input, output);
+	if (toCheck == -1) {
+		ASSERT_TRUE(!toCheck);
+	}
 	FILE* fp = fopen(output, "r");
 	if (fp == NULL) {
 		printf("error in file");
@@ -191,25 +182,9 @@ TEST(FunctionalTest, ResultNotExistCheck) {
 TEST(FunctionalTest, SumEquelsToOneOfTheElements) {
 	char* filename = "test_data/SumEquelsToOneOfTheElements/input.txt";
 	char* name = "test_data/SumEquelsToOneOfTheElements/output.txt";
-	int* set = NULL;
-	unsigned long int num;
-	int amount;
-	int check = ReadData(filename, &num, &amount, &set);
-	if (check == -1) {
-		printf("error in reading data");
-		ASSERT_TRUE(check);
-	}
-	EXPECT_EQ(amount, 5);
-	EXPECT_EQ(num, 10);
-	int* res = NULL;
-	int size = SubsetSum(set, amount, num, &res);
-	if (size == -1) {
-		ASSERT_TRUE(size);
-	}
-	EXPECT_EQ(size, 1);
-	check = MassInFile(name, res, size);
-	if (check == -1) {
-		ASSERT_TRUE(check);
+	int toCheck = LabSolution(filename, name);
+	if (toCheck == -1) {
+		ASSERT_TRUE(!toCheck);
 	}
 	FILE* fp = fopen(name, "r");
 	if (fp == NULL) {
@@ -219,6 +194,4 @@ TEST(FunctionalTest, SumEquelsToOneOfTheElements) {
 	char str[100];
 	fgets(str, 100, fp);
 	EXPECT_EQ(strcmp(str, "10 "), 0);
-	free(res);
-	free(set);
 }

@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 	int FindSet(int** subset, int* mass, int** res, int n, int sum);
-	int SubsetSum(int* set, int n, int sum, int** res );
+	int SubsetSum(int* set, int n, unsigned long int sum, int** res );
 	int MassInFile(char* stream, int* mass, int size);
 	void PrintRectMatrix(int** subset, int n, int sum);
 	void FillZeroRectMatrix(int** matrix, int str, int col);

@@ -18,7 +18,7 @@ int ReadData(char* filename, unsigned long int* sum, int* amount, int** mass) {
 		return -1;
 	}
 	for (int i = 0; i < *amount; i++) {
-		int check = fscanf(fstdin, "%d", (*mass)+i);
+		int check = fscanf(fstdin, "%d", (*mass) + i);
 		if (check == 0) {
 			printf("error in reading from file");
 			fclose(fstdin);
@@ -121,7 +121,7 @@ int MassInFile(char* stream, int* mass, int size) {
 	return 0;
 }
 
-int SubsetSum(int* set, int n, int sum, int** res) {
+int SubsetSum(int* set, int n, unsigned long int sum, int** res) {
 	int size = 0;
 	int** subset = CreateRectMatrix(n + 1, sum + 1);
 	if (subset == NULL) {
@@ -150,7 +150,7 @@ int SubsetSum(int* set, int n, int sum, int** res) {
 	}
 	*res = (int*)malloc(sizeof(int));
 	if (*res == NULL) {
-		DestroyMatrix(subset, n+1, sum+1);
+		DestroyMatrix(subset, n + 1, sum + 1);
 		return -1;
 	}
 	int* tmp = *res;
