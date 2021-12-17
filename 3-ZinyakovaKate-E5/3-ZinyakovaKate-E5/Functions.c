@@ -29,6 +29,10 @@ int CountWidth(int num) {
 	}
 }
 
+int CountSubTree(Tree* tree) {
+	return CountWidth(tree->value) + CountWidth(tree->width);
+}
+
 Tree* Insert(Tree* myTree, int val) {
 	int flag = 0;
 	if (myTree == NULL) {
@@ -75,7 +79,7 @@ void FillWidth(Tree** myTree) {
 		FillWidth(&((*myTree)->left));
 		Tree* tmpTree = *myTree;
 		tmpTree = tmpTree->left;
-		countLeft = tmpTree->width;
+		countLeft = tmpTree->width + CountWidth(tmpTree->width);
 		(*myTree)->width = countLeft;
 		if ((*myTree)->right == NULL) {
 			(*myTree)->width = countLeft + CountWidth((*myTree)->value);
@@ -86,7 +90,7 @@ void FillWidth(Tree** myTree) {
 		Tree* tmpTree = *myTree;
 		tmpTree = tmpTree->right;
 		numRight = CountWidth(tmpTree->value);
-		countRight = tmpTree->width + CountWidth((*myTree)->value);
+		countRight = tmpTree->width + CountWidth((*myTree)->value) + CountWidth(tmpTree->width);
 		(*myTree)->width += countRight;
 	}
 }

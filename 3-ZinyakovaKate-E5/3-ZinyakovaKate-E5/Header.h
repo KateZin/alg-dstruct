@@ -20,6 +20,7 @@ extern "C" {
 	void FillWidth(Tree** myTree);
 	Tree* Insert(Tree* myTree, int val);
 	int CountWidth(int num);
+	int CountSubTree(Tree* tree);
 	int abs(int num);
 	void PrintTreeValue(Tree* t);
 	void PrintTreeWidth(Tree* t);
