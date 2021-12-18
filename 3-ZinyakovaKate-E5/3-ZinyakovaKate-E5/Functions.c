@@ -29,10 +29,6 @@ int CountWidth(int num) {
 	}
 }
 
-int CountSubTree(Tree* tree) {
-	return CountWidth(tree->value) + CountWidth(tree->width);
-}
-
 Tree* Insert(Tree* myTree, int val) {
 	int flag = 0;
 	if (myTree == NULL) {
@@ -65,34 +61,51 @@ Tree* Insert(Tree* myTree, int val) {
 }
 
 void FillWidth(Tree** myTree) {
-	int countLeft = 0;
-	int countRight = 0;
-	int numLeft = 0, numRight = 0;
+	int fillRes = 0, curWidth = 0, tmp = 0, curVal = 0, tmpRight = 0, tmpLeft = 0;
 	if (myTree == NULL) {
 		return;
 	}
 	if ((*myTree)->left == NULL && (*myTree)->right == NULL) {
-		(*myTree)->width = CountWidth((*myTree)->value);
+		curVal = CountWidth((*myTree)->value);
+		curWidth = CountWidth(curVal + tmp);
+		fillRes = curVal + curWidth;
+		if (CountWidth(fillRes) > CountWidth(curWidth)) {
+			fillRes++;
+		}
+		(*myTree)->width = fillRes;
 		return;
 	}
 	if ((*myTree)->left != NULL) {
 		FillWidth(&((*myTree)->left));
 		Tree* tmpTree = *myTree;
 		tmpTree = tmpTree->left;
-		countLeft = tmpTree->width + CountWidth(tmpTree->width);
-		(*myTree)->width = countLeft;
+		tmp = tmpTree->width;
+		curVal = CountWidth((*myTree)->value);
+		curWidth = CountWidth(curVal + tmp);
+		fillRes = tmp;
 		if ((*myTree)->right == NULL) {
-			(*myTree)->width = countLeft + CountWidth((*myTree)->value);
+			fillRes = tmp + curVal + curWidth;
 		}
 	}
 	if ((*myTree)->right != NULL) {
 		FillWidth(&((*myTree)->right));
 		Tree* tmpTree = *myTree;
 		tmpTree = tmpTree->right;
-		numRight = CountWidth(tmpTree->value);
-		countRight = tmpTree->width + CountWidth((*myTree)->value) + CountWidth(tmpTree->width);
-		(*myTree)->width += countRight;
+		tmp = tmpTree->width;
+		curVal = CountWidth((*myTree)->value);
+		curWidth = CountWidth(curVal + tmp + fillRes);
+		fillRes += tmp + curVal + curWidth;
 	}
+	if ((*myTree)->right != NULL) {
+		tmpRight = (*myTree)->right->width;
+	}
+	if ((*myTree)->left != NULL) {
+		tmpLeft = (*myTree)->left->width;
+	}
+	if (CountWidth(fillRes) > CountWidth(tmpRight + tmpLeft + curVal)) {
+		fillRes++;
+	}
+	(*myTree)->width = fillRes;
 }
 
 void PrintTreeValue(Tree* t) {
