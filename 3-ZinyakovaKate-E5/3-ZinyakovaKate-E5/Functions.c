@@ -110,7 +110,8 @@ void FillWidth(Tree** myTree) {
 
 void PrintTreeValue(Tree* t) {
 	if (t != NULL) {
-		printf("%d ", t->value);
+		printf("%d \n", t->value);
+		printf("%d \n", t->width);
 		PrintTreeValue(t->left);
 		PrintTreeValue(t->right);
 	}
@@ -126,11 +127,11 @@ void PrintTreeWidth(Tree* t) {
 
 void PrintTree(Tree* t) {
 	if (t != NULL) {
-		PrintTreeValue(t, t->value);
-		printf("\n");
-		PrintTreeWidth(t, t->width);
+		printf("%d \n", t->value);
+		printf("%d \n", t->width);
+		PrintTree(t->left);
+		PrintTree(t->right);
 	}
-	printf("\n");
 }
 
 void DestroyTree(Tree* tree) {
