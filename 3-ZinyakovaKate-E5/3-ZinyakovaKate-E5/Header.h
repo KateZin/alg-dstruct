@@ -20,8 +20,6 @@ extern "C" {
 	Tree* Insert(Tree* myTree, int val);
 	int CountWidth(int num);
 	int abs(int num);
-	void PrintTreeValue(Tree* t);
-	void PrintTreeWidth(Tree* t);
 	void PrintTree(Tree* t, int n);
 
 #ifdef __cplusplus
