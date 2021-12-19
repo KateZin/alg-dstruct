@@ -30,7 +30,6 @@ int CountWidth(int num) {
 }
 
 Tree* Insert(Tree* myTree, int val) {
-	int flag = 0;
 	if (myTree == NULL) {
 		myTree = (Tree*)malloc(sizeof(Tree));
 		if (myTree == NULL) {
@@ -125,12 +124,20 @@ void PrintTreeWidth(Tree* t) {
 	}
 }
 
-void PrintTree(Tree* t) {
+void PrintTree(Tree* t, int n) {
+	int i;
 	if (t != NULL) {
-		printf("%d \n", t->value);
-		printf("%d \n", t->width);
-		PrintTree(t->left);
-		PrintTree(t->right);
+		PrintTree(t->right, n + 3);
+		for (i = 0; i < n; i++) {
+			putchar(' '); 
+		}
+		printf("%d\n", t->value);
+		for (i = 0; i < n; i++) {
+			putchar(' ');
+		}
+		printf("%d\n", t->width);
+		PrintTree(t->left, n + 3);
+
 	}
 }
 

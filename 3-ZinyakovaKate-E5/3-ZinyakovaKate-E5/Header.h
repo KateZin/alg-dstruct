@@ -16,14 +16,13 @@ extern "C" {
 	} Tree;
 
 	void DestroyTree(Tree* tree);
-	void PrintTree(Tree* t);
 	void FillWidth(Tree** myTree);
 	Tree* Insert(Tree* myTree, int val);
 	int CountWidth(int num);
 	int abs(int num);
 	void PrintTreeValue(Tree* t);
 	void PrintTreeWidth(Tree* t);
-	void PrintTree(Tree* t);
+	void PrintTree(Tree* t, int n);
 
 #ifdef __cplusplus
 }
