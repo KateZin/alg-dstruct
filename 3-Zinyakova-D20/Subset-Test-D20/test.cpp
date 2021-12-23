@@ -57,7 +57,7 @@ TEST(FunctionalTest, CheckSizeOfSubSet) {
 	char* filename = "test_data/CheckSizeOfSubSet/input.txt";
 	char* name = "test_data/CheckSizeOfSubSet/output.txt";
 	int* set = NULL;
-	unsigned long int num;
+	unsigned long long num;
 	int amount;
 	int check = ReadData(filename, &num, &amount, &set);
 	if (check == -1) {

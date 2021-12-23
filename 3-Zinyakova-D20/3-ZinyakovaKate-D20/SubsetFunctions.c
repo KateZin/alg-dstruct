@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "SubsetHeader.h"
 
-int ReadData(char* filename, unsigned long int* sum, int* amount, int** mass) {
+int ReadData(char* filename, unsigned long long* sum, int* amount, int** mass) {
 	FILE* fstdin = fopen(filename, "r");
 	if (fstdin == NULL) {
 		printf("Error in file");
@@ -44,7 +44,7 @@ void PrintMassConvert(int* mass, int size) {
 	}
 }
 
-int** CreateRectMatrix(int str, unsigned long int col) {
+int** CreateRectMatrix(int str, unsigned long long col) {
 	int** matrix = (int**)malloc(sizeof(int*) * str);
 	if (matrix == NULL) {
 		return NULL;
@@ -62,7 +62,7 @@ int** CreateRectMatrix(int str, unsigned long int col) {
 	return matrix;
 }
 
-void FillZeroRectMatrix(int** matrix, int str, unsigned long int col) {
+void FillZeroRectMatrix(int** matrix, int str, unsigned long long col) {
 	for (int i = 0; i < str; i++) {
 		for (int j = 0; j < col; j++) {
 			matrix[i][j] = 0;
@@ -70,7 +70,7 @@ void FillZeroRectMatrix(int** matrix, int str, unsigned long int col) {
 	}
 }
 
-void PrintRectMatrix(int** subset, int n, unsigned long int sum) {
+void PrintRectMatrix(int** subset, int n, unsigned long long sum) {
 	printf("\n");
 	for (int i = 0; i <= n; i++) {
 		for (int j = 0; j <= sum; j++) {
@@ -81,7 +81,7 @@ void PrintRectMatrix(int** subset, int n, unsigned long int sum) {
 	printf("\n");
 }
 
-int FindSet(unsigned long int** subset, int* mass, int** res, int n, int sum) {
+int FindSet(int** subset, int* mass, int** res, int n, int sum) {
 	int i = n;
 	int j = sum;
 	int count = 0;
@@ -121,9 +121,9 @@ int MassInFile(char* stream, int* mass, int size) {
 	return 0;
 }
 
-int SubsetSum(int* set, int n, unsigned long int sum, int** res) {
+int SubsetSum(int* set, int n, unsigned long long sum, int** res) {
 	int size = 0;
-	unsigned long int** subset = CreateRectMatrix(n + 1, sum + 1);
+	int** subset = CreateRectMatrix(n + 1, sum + 1);
 	if (subset == NULL) {
 		return -1;
 	}
@@ -171,7 +171,7 @@ int SubsetSum(int* set, int n, unsigned long int sum, int** res) {
 	return size;
 }
 
-void DestroyMatrix(unsigned long int** matrix, int str, unsigned long int col) {
+void DestroyMatrix(int** matrix, int str, unsigned long long col) {
 	for (int i = 0; i < str; i++) {
 		free(matrix[i]);
 	}
@@ -180,7 +180,7 @@ void DestroyMatrix(unsigned long int** matrix, int str, unsigned long int col) {
 
 int LabSolution(char* input, char* output) {
 	int* set = NULL;
-	unsigned long int num;
+	unsigned long long num;
 	int amount;
 	int check = ReadData(input, &num, &amount, &set);
 	if (check == -1) {
