@@ -41,25 +41,16 @@ TEST(StressTest, SubsetSum) {
 	}
 	fclose(fstdin);
 	// read file and run functions
+	LARGE_INTEGER start, end, freq;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&start);
 	int toCheck = LabSolution(input, output);
+	QueryPerformanceCounter(&end);
+	double time = (end.QuadPart - start.QuadPart) / freq.QuadPart;
+	printf("\n%lf", time);
 	if (toCheck == -1) {
 		ASSERT_TRUE(!toCheck);
 	}
-}
-
-TEST(FunctionalTest, CheckWritingInFile) {
-	char* filename = "test_data/CheckWriting/Input.txt";
-	int* set = NULL;
-	unsigned long int num;
-	int amount;
-	int check = ReadData(filename, &num, &amount, &set);
-	if (check == -1) {
-		printf("error in reading data");
-		ASSERT_TRUE(!check);
-	}
-	EXPECT_EQ(amount, 10);
-	EXPECT_EQ(num, 20);
-	free(set);
 }
 
 TEST(FunctionalTest, CheckSizeOfSubSet) {
