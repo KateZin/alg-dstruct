@@ -9,7 +9,7 @@ int ReadData(char* filename, unsigned long long* sum, int* amount, int** mass) {
 		printf("Error in file");
 		return -1;
 	}
-	fscanf(fstdin, "%lu\n", sum);
+	fscanf(fstdin, "%llu\n", sum);
 	fscanf(fstdin, "%d\n", amount);
 	*mass = (int*)malloc(sizeof(int) * *amount);
 	if (mass == NULL) {
