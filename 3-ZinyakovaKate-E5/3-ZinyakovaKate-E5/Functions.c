@@ -1,9 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 #include <crtdbg.h>
 #include <Header.h>
 
-int abs(int num) {
+int Abs(int num) {
 	if (num >= 0) {
 		return num;
 	}
@@ -60,51 +61,32 @@ Tree* Insert(Tree* myTree, int val) {
 }
 
 void FillWidth(Tree** myTree) {
-	int fillRes = 0, curWidth = 0, tmp = 0, curVal = 0, tmpRight = 0, tmpLeft = 0;
+	int countLeft = 0;
+	int countRight = 0;
 	if (myTree == NULL) {
 		return;
 	}
 	if ((*myTree)->left == NULL && (*myTree)->right == NULL) {
-		curVal = CountWidth((*myTree)->value);
-		curWidth = CountWidth(curVal + tmp);
-		fillRes = curVal + curWidth;
-		if (CountWidth(fillRes) > CountWidth(curWidth)) {
-			fillRes++;
-		}
-		(*myTree)->width = fillRes;
+		(*myTree)->width = CountWidth((*myTree)->value);
 		return;
 	}
 	if ((*myTree)->left != NULL) {
 		FillWidth(&((*myTree)->left));
 		Tree* tmpTree = *myTree;
 		tmpTree = tmpTree->left;
-		tmp = tmpTree->width;
-		curVal = CountWidth((*myTree)->value);
-		curWidth = CountWidth(curVal + tmp);
-		fillRes = tmp;
+		countLeft = tmpTree->width;
+		(*myTree)->width = countLeft;
 		if ((*myTree)->right == NULL) {
-			fillRes = tmp + curVal + curWidth;
+			(*myTree)->width = countLeft + CountWidth((*myTree)->value);
 		}
 	}
 	if ((*myTree)->right != NULL) {
 		FillWidth(&((*myTree)->right));
 		Tree* tmpTree = *myTree;
 		tmpTree = tmpTree->right;
-		tmp = tmpTree->width;
-		curVal = CountWidth((*myTree)->value);
-		curWidth = CountWidth(curVal + tmp + fillRes);
-		fillRes += tmp + curVal + curWidth;
+		countRight = tmpTree->width + CountWidth((*myTree)->value);
+		(*myTree)->width += countRight;
 	}
-	if ((*myTree)->right != NULL) {
-		tmpRight = (*myTree)->right->width;
-	}
-	if ((*myTree)->left != NULL) {
-		tmpLeft = (*myTree)->left->width;
-	}
-	if (CountWidth(fillRes) > CountWidth(tmpRight + tmpLeft + curVal)) {
-		fillRes++;
-	}
-	(*myTree)->width = fillRes;
 }
 
 void PrintTree(Tree* t, int n) {
@@ -112,7 +94,7 @@ void PrintTree(Tree* t, int n) {
 	if (t != NULL) {
 		PrintTree(t->right, n + 3);
 		for (i = 0; i < n; i++) {
-			putchar(' '); 
+			putchar(' ');
 		}
 		printf("%d\n", t->value);
 		for (i = 0; i < n; i++) {

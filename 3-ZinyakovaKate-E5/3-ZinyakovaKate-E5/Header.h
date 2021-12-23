@@ -3,7 +3,6 @@
 #define __HEADER_H_
 #include <stdio.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -16,11 +15,11 @@ extern "C" {
 	} Tree;
 
 	void DestroyTree(Tree* tree);
+	void PrintTree(Tree* t, int n);
 	void FillWidth(Tree** myTree);
 	Tree* Insert(Tree* myTree, int val);
 	int CountWidth(int num);
-	int abs(int num);
-	void PrintTree(Tree* t, int n);
+	int Abs(int num);
 
 #ifdef __cplusplus
 }
