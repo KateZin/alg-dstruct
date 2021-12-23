@@ -44,7 +44,7 @@ void PrintMassConvert(int* mass, int size) {
 	}
 }
 
-int** CreateRectMatrix(int str, int col) {
+int** CreateRectMatrix(int str, unsigned long int col) {
 	int** matrix = (int**)malloc(sizeof(int*) * str);
 	if (matrix == NULL) {
 		return NULL;
@@ -62,7 +62,7 @@ int** CreateRectMatrix(int str, int col) {
 	return matrix;
 }
 
-void FillZeroRectMatrix(int** matrix, int str, int col) {
+void FillZeroRectMatrix(int** matrix, int str, unsigned long int col) {
 	for (int i = 0; i < str; i++) {
 		for (int j = 0; j < col; j++) {
 			matrix[i][j] = 0;
@@ -70,7 +70,7 @@ void FillZeroRectMatrix(int** matrix, int str, int col) {
 	}
 }
 
-void PrintRectMatrix(int** subset, int n, int sum) {
+void PrintRectMatrix(int** subset, int n, unsigned long int sum) {
 	printf("\n");
 	for (int i = 0; i <= n; i++) {
 		for (int j = 0; j <= sum; j++) {
@@ -81,7 +81,7 @@ void PrintRectMatrix(int** subset, int n, int sum) {
 	printf("\n");
 }
 
-int FindSet(int** subset, int* mass, int** res, int n, int sum) {
+int FindSet(unsigned long int** subset, int* mass, int** res, int n, int sum) {
 	int i = n;
 	int j = sum;
 	int count = 0;
@@ -123,7 +123,7 @@ int MassInFile(char* stream, int* mass, int size) {
 
 int SubsetSum(int* set, int n, unsigned long int sum, int** res) {
 	int size = 0;
-	int** subset = CreateRectMatrix(n + 1, sum + 1);
+	unsigned long int** subset = CreateRectMatrix(n + 1, sum + 1);
 	if (subset == NULL) {
 		return -1;
 	}
@@ -171,7 +171,7 @@ int SubsetSum(int* set, int n, unsigned long int sum, int** res) {
 	return size;
 }
 
-void DestroyMatrix(int** matrix, int str, int col) {
+void DestroyMatrix(unsigned long int** matrix, int str, unsigned long int col) {
 	for (int i = 0; i < str; i++) {
 		free(matrix[i]);
 	}
