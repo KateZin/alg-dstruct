@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-	int FindSet(int** subset, int* mass, int** res, int n, int sum);
+	int FindSet(int** subset, int* mass, int** res, int n, unsigned long long sum);
 	int SubsetSum(int* set, int n, unsigned long long sum, int** res );
 	int MassInFile(char* stream, int* mass, int size);
 	void PrintRectMatrix(int** subset, int n, unsigned long long sum);

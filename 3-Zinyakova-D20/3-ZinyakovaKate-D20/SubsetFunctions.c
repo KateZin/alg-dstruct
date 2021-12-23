@@ -9,7 +9,7 @@ int ReadData(char* filename, unsigned long long* sum, int* amount, int** mass) {
 		printf("Error in file");
 		return -1;
 	}
-	fscanf(fstdin, "%llu\n", sum);
+	fscanf(fstdin, "%lu\n", sum);
 	fscanf(fstdin, "%d\n", amount);
 	*mass = (int*)malloc(sizeof(int) * *amount);
 	if (mass == NULL) {
@@ -81,11 +81,11 @@ void PrintRectMatrix(int** subset, int n, unsigned long long sum) {
 	printf("\n");
 }
 
-int FindSet(int** subset, int* mass, int** res, int n, int sum) {
+int FindSet(int** subset, int* mass, int** res, int n, unsigned long long sum) {
 	int i = n;
-	int j = sum;
+	unsigned long long j = sum;
 	int count = 0;
-	int check = 0;
+	unsigned long long check = 0;
 	while (check != sum) {
 		if (mass[i - 1] == sum) {
 			**res = mass[i - 1];
