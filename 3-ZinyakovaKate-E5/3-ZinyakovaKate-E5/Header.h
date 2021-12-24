@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __HEADER_H_
 #define __HEADER_H_
 #include <stdio.h>
@@ -16,7 +15,7 @@ extern "C" {
 
 	void DestroyTree(Tree* tree);
 	void PrintTree(Tree* t, int n);
-	void FillWidth(Tree** myTree);
+	void FillWidth(Tree* myTree);
 	Tree* Insert(Tree* myTree, int val);
 	int CountWidth(int num);
 	int Abs(int num);

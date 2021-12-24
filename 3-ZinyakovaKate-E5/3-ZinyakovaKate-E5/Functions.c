@@ -47,12 +47,14 @@ Tree* Insert(Tree* myTree, int val) {
 		if (val <= myTree->value) {
 			myTree->left = Insert(myTree->left, val);
 			if (myTree->left == NULL) {
+				DestroyTree(myTree);
 				return NULL;
 			}
 		}
 		else if (val > myTree->value) {
 			myTree->right = Insert(myTree->right, val);
 			if (myTree->right == NULL) {
+				DestroyTree(myTree);
 				return NULL;
 			}
 		}
@@ -60,32 +62,28 @@ Tree* Insert(Tree* myTree, int val) {
 	return myTree;
 }
 
-void FillWidth(Tree** myTree) {
+void FillWidth(Tree* myTree) {
 	int countLeft = 0;
 	int countRight = 0;
 	if (myTree == NULL) {
 		return;
 	}
-	if ((*myTree)->left == NULL && (*myTree)->right == NULL) {
-		(*myTree)->width = CountWidth((*myTree)->value);
+	if (myTree->left == NULL && myTree->right == NULL) {
+		myTree->width = CountWidth(myTree->value);
 		return;
 	}
-	if ((*myTree)->left != NULL) {
-		FillWidth(&((*myTree)->left));
-		Tree* tmpTree = *myTree;
-		tmpTree = tmpTree->left;
-		countLeft = tmpTree->width;
-		(*myTree)->width = countLeft;
-		if ((*myTree)->right == NULL) {
-			(*myTree)->width = countLeft + CountWidth((*myTree)->value);
+	if (myTree->left != NULL) {
+		FillWidth(myTree->left);
+		countLeft = myTree->left->width;
+		myTree->width = countLeft;
+		if (myTree->right == NULL) {
+			myTree->width = countLeft + CountWidth(myTree->value);
 		}
 	}
-	if ((*myTree)->right != NULL) {
-		FillWidth(&((*myTree)->right));
-		Tree* tmpTree = *myTree;
-		tmpTree = tmpTree->right;
-		countRight = tmpTree->width + CountWidth((*myTree)->value);
-		(*myTree)->width += countRight;
+	if (myTree->right != NULL) {
+		FillWidth(myTree->right);
+		countRight = myTree->right->width + CountWidth(myTree->value);
+		myTree->width += countRight;
 	}
 }
 
