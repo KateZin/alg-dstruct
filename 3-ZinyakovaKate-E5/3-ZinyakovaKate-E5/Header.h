@@ -19,7 +19,6 @@ extern "C" {
 	void FillWidth(Tree* myTree);
 	int CountWidth(int num);
 	int Abs(int num);
-	int ComparePrintResults(Tree* tree, char* resFile, char* myFile);
 
 #ifdef __cplusplus
 }

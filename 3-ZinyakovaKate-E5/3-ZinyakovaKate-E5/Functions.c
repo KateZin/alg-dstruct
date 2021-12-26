@@ -84,38 +84,6 @@ void PrintTree(Tree* t, int n, FILE* file) {
 	}
 }
 
-int ComparePrintResults(Tree* tree, char* resFile, char* myFile) {
-	int expect, res;
-	FILE* p1 = fopen(myFile, "w");
-	if (p1 == NULL) {
-		printf("error in openning file");
-		return -1;
-	}
-	PrintTree(tree, 1, p1);
-	fclose(p1);
-	FILE* p2 = fopen(resFile, "r");
-	if (p2 == NULL) {
-		printf("error in openning file");
-		return -1;
-	}
-	p1 = fopen(myFile, "r");
-	if (p1 == NULL) {
-		printf("error in openning file");
-		fclose(p2);
-		return -1;
-	}
-	while (fscanf(p2, "%d", &expect) != EOF && fscanf(p1, "%d", &res) != EOF) {
-		if (expect != res) {
-			fclose(p1);
-			fclose(p2);
-			return 0;
-		}
-	}
-	fclose(p1);
-	fclose(p2);
-	return 1;
-}
-
 void DestroyTree(Tree* tree) {
 	if (tree != NULL) {
 		DestroyTree(tree->left);
