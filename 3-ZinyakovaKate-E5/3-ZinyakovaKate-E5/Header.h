@@ -13,12 +13,13 @@ extern "C" {
 		struct Tree* right;
 	} Tree;
 
+	Tree* CreateTree(void);
 	void DestroyTree(Tree* tree);
-	void PrintTree(Tree* t, int n);
+	void PrintTree(Tree* t, int n, FILE* file);
 	void FillWidth(Tree* myTree);
-	Tree* Insert(Tree* myTree, int val);
 	int CountWidth(int num);
 	int Abs(int num);
+	int ComparePrintResults(Tree* tree, char* resFile, char* myFile);
 
 #ifdef __cplusplus
 }
