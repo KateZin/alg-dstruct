@@ -112,7 +112,7 @@ int Solution(FILE* fpIn, FILE* fpOut) {
 			break;
 		default:
 			Destroy(tree);
-			break;
+			return 0;
 		}
 	}
 	Destroy(tree);
