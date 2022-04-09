@@ -103,8 +103,8 @@ void DeleteKey(int value, Tree* treeNode) {
     }
 }
 
-void TransformNode(int value, int* keys, Tree* treeNode, Tree* first, Tree* second) {
-    keys[0] = value;
+void TransformNode(int value, Tree* treeNode, Tree* first, Tree* second) {
+    treeNode->keys[0] = value;
     treeNode->first = first;
     treeNode->second = second;
     treeNode->third = NULL;
@@ -133,14 +133,20 @@ Tree* InsertNode(Tree* tree, int value) {
     if (IsLeaf(tree)) {
         InsertToNode(value, tree);
     }
-    else if (value <= tree->keys[0]) {
-        InsertNode(tree->first, value);
+    else if (value < tree->keys[0]) {
+        if (!InsertNode(tree->first, value)) {
+            return tree;
+        }
     }
-    else if ((tree->size == 1) || ((tree->size == 2) && value <= tree->keys[1])) {
-        InsertNode(tree->second, value);
+    else if ((tree->size == 1) || ((tree->size == 2) && value < tree->keys[1])) {
+        if (!InsertNode(tree->second, value)) {
+            return tree;
+        }
     }
     else {
-        InsertNode(tree->third, value);
+        if (!InsertNode(tree->third, value)) {
+            return tree;
+        }
     }
     return Split(tree);
 }
@@ -190,6 +196,9 @@ Tree* Split(Tree* item) {
     }
     Tree* x = CreateAndFillNode(item->keys[0], item->first, item->second, NULL, NULL, item->parent);
     Tree* y = CreateAndFillNode(item->keys[2], item->third, item->fourth, NULL, NULL, item->parent);
+    if (!x || !y) {
+        return NULL;
+    }
     if (x->first) {
         x->first->parent = x;
     }
@@ -235,7 +244,7 @@ Tree* Split(Tree* item) {
     else {
         x->parent = item;
         y->parent = item;
-        TransformNode(item->keys[1], item->keys, item, x, y);
+        TransformNode(item->keys[1], item, x, y);
         return item;
     }
 }
@@ -543,16 +552,28 @@ Tree* Redistribute(Tree* leaf) {
     return parent;
 }
 
-void PrintTree(Tree* tree) {
-    if (!tree) {
+void PrintTree(Tree* t, int n) {
+    int i;
+    if (!t) {
         return;
     }
-    PrintTree(tree->first);
-    for (int i = 0; i < tree->size; i++) {
-        printf("%d ", tree->keys[i]);
+    else {
+        PrintTree(t->first, n + 2);
+        for (i = 0; i < n; i++) {
+            printf("  ");
+        }
+        printf("%d", t->keys[0]);
+        printf("\n");
+        PrintTree(t->second, n + 2); 
+        for (int i = 0; i < n; i++) {
+            printf("  ");
+        }
+        if (t->size == 2) {
+            printf("%d", t->keys[1]);
+        }
+        printf("\n");
+        PrintTree(t->third, n + 2); 
     }
-    PrintTree(tree->second);
-    PrintTree(tree->third);
 }
 
 void DestroyTree(Tree* tree) {
@@ -591,10 +612,5 @@ int Solution(FILE* fpIn, FILE* fpOut) {
         }
     }
     DestroyTree(tree);
-    return 0;
-}
-
-int main(void) {
-    Solution(stdin, stdout);
     return 0;
 }
