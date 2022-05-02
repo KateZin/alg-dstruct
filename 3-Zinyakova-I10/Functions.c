@@ -195,9 +195,12 @@ Tree* Split(Tree* item) {
         return item;
     }
     Tree* x = CreateAndFillNode(item->keys[0], item->first, item->second, NULL, NULL, item->parent);
+    if (!x) {
+        return NULL;
+    }
     Tree* y = CreateAndFillNode(item->keys[2], item->third, item->fourth, NULL, NULL, item->parent);
-    if (!x || !y) {
-        DestroyTree(item);
+    if (!y) {
+        free(x);
         return NULL;
     }
     if (x->first) {
