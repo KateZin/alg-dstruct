@@ -37,6 +37,7 @@ int AddNode(Node** table, char* key) {
         }
         newNode->data = (char*)malloc((strlen(key) + 1) * sizeof(char));
         if (newNode->data == NULL){
+            free(newNode);
             return 0;
         }
         strcpy(newNode->data, key);
@@ -62,6 +63,8 @@ int DeleteNode(Node** table, char* key) {
         else{
             table[index] = it->next;
         }
+        free(it->data);
+        free(it);
     }
     return 0;
 }
@@ -86,8 +89,6 @@ int DeleteTable(Node** table) {
     for (int i = 0; i < TABLE_SIZE; i++){
         DeleteChain(&table[i]);
     }
-    free(*table);
-    table = NULL;
     return 0;
 }
 
